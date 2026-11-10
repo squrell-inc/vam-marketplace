@@ -30,10 +30,15 @@ marketplace.json                      the index: name, publisherDomain, listings
 listings/<listing>/skills/<name>/     SKILLS.md, manifest.json, tool entry points (Bun TypeScript), jigs/ cards
 listings/<listing>/agents/<name>/     agent.json
 listings/<listing>/playbooks/<name>/  playbook.json
+listings/<listing>/connectors/<id>/   connector.json (a remote MCP server with OAuth discovery; not for built-in connectors)
 tests/<skill>/                        Bun tests for a skill's tools, against recorded service answers
 ```
 
 ## Add a listing
+
+New to VAM? Start with the worked example [`docs/reference-listing-notion.md`](docs/reference-listing-notion.md):
+a Notion listing with a connector, a skill, a playbook and an agent, every file validated, plus how to
+release, install and test it, and the rules that trip people up.
 
 1. Create `listings/<id>/` with its artifacts. Skills, agents and playbooks use the package layout of
    `vam catalog validate` (the same check the node runs when it imports them).
