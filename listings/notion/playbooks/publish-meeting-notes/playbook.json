@@ -1,0 +1,87 @@
+{
+  "spec": {
+    "resourceId": { "urn": "urn:vam:playbook:hub.squrell.cloud/squrell/publish-meeting-notes" },
+    "displayName": "Publish meeting notes",
+    "description": "Turn raw meeting notes into a Notion page: find the right parent, draft the page, ask the member to approve it, then create it.",
+    "activation": {
+      "when": "Use when the member gives meeting notes and wants them written up as a page in Notion.",
+      "examples": ["Put these notes from today's planning call into our Meetings page in Notion."]
+    },
+    "requires": {
+      "skills": [
+        { "resourceId": { "urn": "urn:vam:skill:hub.squrell.cloud/squrell/notion-workspace" } }
+      ]
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "notes": { "type": "string", "description": "The raw meeting notes" },
+        "parentHint": { "type": "string", "description": "Words that name the Notion page or database to put it under, such as 'Team meetings'" }
+      },
+      "required": ["notes"],
+      "additionalProperties": false
+    },
+    "steps": [
+      {
+        "id": "find-parent",
+        "description": "Find the Notion page or database the notes belong under.",
+        "kind": "STEP_KIND_TASK",
+        "mode": "STEP_MODE_AGENTIC",
+        "instruction": "Load the notion-workspace skill. Use notion__notion_search with the parentHint input (or, if none was given, the words 'meeting notes') to find the page or database for the notes. Pick the best match and record its id and title. If nothing fits, complete the step with the outcome failed and say what you searched for.",
+        "evidence": { "tool": "notion__notion_search", "result": "success" },
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "parentId": { "type": "string" },
+            "parentTitle": { "type": "string" }
+          },
+          "required": ["parentId", "parentTitle"]
+        }
+      },
+      {
+        "id": "draft-page",
+        "description": "Write the page the member will review.",
+        "kind": "STEP_KIND_TASK",
+        "mode": "STEP_MODE_AGENTIC",
+        "after": ["find-parent"],
+        "instruction": "From the notes input, write a page: a short title, then Summary, Decisions and Action items (owner and due date when the notes give them). Use only what is in the notes; do not invent attendees, dates or decisions. Record the title and the page body. Do not create anything in Notion in this step.",
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "title": { "type": "string" },
+            "body": { "type": "string" }
+          },
+          "required": ["title", "body"]
+        }
+      },
+      {
+        "id": "approve",
+        "description": "The member reads the draft and decides.",
+        "kind": "STEP_KIND_GATE",
+        "after": ["draft-page"],
+        "question": "Create the page '{{steps.draft-page.output.title}}' under '{{steps.find-parent.output.parentTitle}}' in Notion?",
+        "timeout": "86400s",
+        "options": [
+          { "label": "approved", "description": "Create the page as drafted" },
+          { "label": "rejected", "description": "Stop without creating anything", "terminal": "OUTCOME_TERMINAL_SUCCEEDED" }
+        ]
+      },
+      {
+        "id": "create-page",
+        "description": "Create the approved page.",
+        "kind": "STEP_KIND_TASK",
+        "mode": "STEP_MODE_AGENTIC",
+        "after": ["approve:approved"],
+        "instruction": "Call notion__notion_create_pages once to create the drafted page under the parent found in find-parent, with the title and body from draft-page exactly as approved. Then tell the member the page title and where it lives.",
+        "evidence": { "tool": "notion__notion_create_pages", "result": "success" }
+      }
+    ],
+    "guards": [
+      {
+        "tools": ["notion__notion_create_pages"],
+        "sideEffects": ["SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL"],
+        "allowedWhen": ["approve:approved"]
+      }
+    ]
+  }
+}

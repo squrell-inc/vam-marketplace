@@ -23,6 +23,32 @@
       ],
       "ref": "microsoft-365-v1.0.0",
       "requiresNode": ">=0.1.0"
+    },
+    {
+      "id": "notion",
+      "displayName": "Notion",
+      "description": "Search the member's Notion workspace and publish meeting notes as pages, through their own Notion connection. Pages are created only after the member approves.",
+      "connector": "urn:vam:connector:hub.squrell.cloud/squrell/notion",
+      "artifacts": [
+        {
+          "kind": "connector",
+          "path": "listings/notion/connectors/notion"
+        },
+        {
+          "kind": "skill",
+          "path": "listings/notion/skills/notion-workspace"
+        },
+        {
+          "kind": "playbook",
+          "path": "listings/notion/playbooks/publish-meeting-notes"
+        },
+        {
+          "kind": "agent",
+          "path": "listings/notion/agents/notion-assistant"
+        }
+      ],
+      "ref": "notion-v1.0.0",
+      "requiresNode": ">=0.1.0"
     }
   ]
 }

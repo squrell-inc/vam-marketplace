@@ -1,0 +1,7 @@
+{
+  "resourceId": { "urn": "urn:vam:skill:hub.squrell.cloud/squrell/notion-workspace" },
+  "version": { "major": 1, "minor": 0, "patch": 0 },
+  "description": "How to search and read the member's Notion workspace, and create pages in it, with the Notion connector's tools.",
+  "requiresConnector": "urn:vam:connector:hub.squrell.cloud/squrell/notion",
+  "tools": []
+}

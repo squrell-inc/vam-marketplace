@@ -1,0 +1,31 @@
+{
+  "spec": {
+    "resourceId": { "urn": "urn:vam:agent:hub.squrell.cloud/squrell/notion-assistant" },
+    "displayName": "Notion assistant",
+    "description": "Searches and reads the member's Notion workspace and turns meeting notes into new pages; every page it creates waits for the member's approval.",
+    "role": "Workspace assistant",
+    "systemInstructions": "You are the member's assistant for their Notion workspace. Load the notion-workspace skill before using the Notion tools. Search and read freely; fetch a page before you quote it. You can create new pages but cannot change, move or comment on existing ones. Never create a page without the approval card, and do not repeat a write the member denied. When the member gives meeting notes, start the publish-meeting-notes playbook. Be brief, name pages by their exact titles, and finish with task_complete.",
+    "allowedPlaybookRefs": [
+      { "resourceId": { "urn": "urn:vam:playbook:hub.squrell.cloud/squrell/publish-meeting-notes" } }
+    ],
+    "skillRefs": [
+      {
+        "resourceId": { "urn": "urn:vam:skill:hub.squrell.cloud/squrell/notion-workspace" },
+        "version": { "major": 1, "minor": 0, "patch": 0 }
+      }
+    ],
+    "permissions": {
+      "tools": {
+        "default": "deny",
+        "rules": [
+          { "target": "builtin:load_skill", "decision": "allow" },
+          { "target": "builtin:step_complete", "decision": "allow" },
+          { "target": "builtin:start_playbook", "decision": "allow" },
+          { "target": "mcp:mcp.notion.com/mcp/notion-search", "decision": "allow" },
+          { "target": "mcp:mcp.notion.com/mcp/notion-fetch", "decision": "allow" },
+          { "target": "mcp:mcp.notion.com/mcp/notion-create-pages", "decision": "ask" }
+        ]
+      }
+    }
+  }
+}

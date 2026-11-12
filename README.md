@@ -8,6 +8,7 @@ and admits them read-only, marked as Squrell content.
 | Listing | Installs |
 |---|---|
 | `microsoft-365` | the `m365-mail` skill (search, read, draft, send, calendar, free times), the Executive assistant agent, the Morning triage playbook. Needs the Microsoft 365 connector built into VAM. |
+| `notion` | a connector for Notion's hosted MCP server (search and fetch run freely, creating pages asks first), the `notion-workspace` skill, the Publish meeting notes playbook, the Notion assistant agent. |
 
 Licence: Apache-2.0 (see `LICENSE`).
 
@@ -30,10 +31,15 @@ marketplace.json                      the index: name, publisherDomain, listings
 listings/<listing>/skills/<name>/     SKILLS.md, manifest.json, tool entry points (Bun TypeScript), jigs/ cards
 listings/<listing>/agents/<name>/     agent.json
 listings/<listing>/playbooks/<name>/  playbook.json
+listings/<listing>/connectors/<id>/   connector.json (a remote MCP server with OAuth discovery; not for built-in connectors)
 tests/<skill>/                        Bun tests for a skill's tools, against recorded service answers
 ```
 
 ## Add a listing
+
+New to VAM? Start with the worked example [`docs/reference-listing-notion.md`](docs/reference-listing-notion.md):
+the Notion listing's connector, skill, playbook and agent, how to test, release and install it, and the
+rules that trip people up.
 
 1. Create `listings/<id>/` with its artifacts. Skills, agents and playbooks use the package layout of
    `vam catalog validate` (the same check the node runs when it imports them).
@@ -77,4 +83,5 @@ non-Squrell content; the content and tags are identical, so listings install the
 ## Contributing
 
 Changes to `microsoft-365` go through a pull request reviewed by the owners in `CODEOWNERS`. Do not
-push tags that are not on a merged commit.
+push release tags that are not on a merged commit, and never move one. A test tag for a private
+pre-release import (for example `notion-v0.1.0` on a side branch) is allowed.

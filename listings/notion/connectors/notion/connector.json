@@ -1,0 +1,24 @@
+{
+  "urn": "urn:vam:connector:hub.squrell.cloud/squrell/notion",
+  "version": "1.0.0",
+  "displayName": "Notion",
+  "publisher": "Notion (hosted MCP server)",
+  "description": "Search and read pages in the member's own Notion workspace, and create new pages after the member approves, through Notion's hosted MCP server.",
+  "icon": "notion",
+  "provider": {
+    "kind": "oauth2",
+    "profile": "discover",
+    "clientSecret": "none",
+    "scopes": [],
+    "orgConsent": "none"
+  },
+  "connection": { "holder": "user", "multiAccount": false, "label": "Notion workspace" },
+  "mcp": {
+    "url": "https://mcp.notion.com/mcp",
+    "tools": [
+      { "remote": "notion-search", "sideEffect": "READ_ONLY" },
+      { "remote": "notion-fetch", "sideEffect": "READ_ONLY" },
+      { "remote": "notion-create-pages", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" }
+    ]
+  }
+}
