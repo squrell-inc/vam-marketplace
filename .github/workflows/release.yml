@@ -1,0 +1,180 @@
+name: release listing
+
+# Creates one listing's release tag, <listing id>-v<major>.<minor>.<patch>, as a lightweight tag on a
+# commit on main. Run it by hand from the Actions tab after the pull request that sets the listing's
+# `ref` is merged. See README.md ("Release a listing").
+#
+# A tag is never moved, overwritten or deleted: the run refuses an existing tag. The `tag` job waits
+# for an approver of the `release` environment (the CODEOWNERS owners) and only then gets write access.
+# A tag created with the workflow token does not trigger validate.yml's tag-push run, so this workflow
+# runs validate.yml itself on the exact commit before tagging.
+
+on:
+  workflow_dispatch:
+    inputs:
+      listing:
+        description: "Listing id in marketplace.json (for example notion)"
+        required: true
+        type: string
+      version:
+        description: "Version to release, major.minor.patch (for example 1.0.1)"
+        required: true
+        type: string
+      commit:
+        description: "Commit on main to tag (full SHA). Empty: the head of main"
+        required: false
+        type: string
+        default: ""
+      dry_run:
+        description: "Dry run: check and validate only, create no tag"
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ inputs.listing }}
+  cancel-in-progress: false
+
+jobs:
+  resolve:
+    name: check the release
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: read # read the release environment's protection rules
+    outputs:
+      sha: ${{ steps.check.outputs.sha }}
+      tag: ${{ steps.check.outputs.tag }}
+    steps:
+      - name: Require the workflow from main
+        if: github.ref != 'refs/heads/main'
+        run: |
+          echo "::error::Run this workflow from main (it ran from $GITHUB_REF), so its checks are the reviewed ones."
+          exit 1
+
+      # A job that names an environment that does not exist creates it with no protection, so the tag
+      # job would run unapproved. Refuse a real run unless `release` exists with required reviewers and
+      # self-review prevention, and allows only main. Checked here, before the tag job can create it.
+      - name: Check the release environment's protection
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          set -euo pipefail
+          level=error; [ "$DRY_RUN" = "true" ] && level=warning
+          problem() { echo "::$level::$1"; [ "$level" = "warning" ] || exit 1; }
+          if ! env_json="$(gh api "repos/$GITHUB_REPOSITORY/environments/release" 2>&1)"; then
+            problem "environment 'release' is missing or unreadable ($env_json). Create it in Settings, Environments, with required reviewers and 'Prevent self-review', limited to main"
+            exit 0
+          fi
+          reviewers="$(echo "$env_json" | jq '[.protection_rules[]? | select(.type == "required_reviewers") | .reviewers[]?] | length')"
+          self="$(echo "$env_json" | jq '[.protection_rules[]? | select(.type == "required_reviewers") | .prevent_self_review] | any')"
+          branches="$(echo "$env_json" | jq '.deployment_branch_policy != null')"
+          [ "$reviewers" -gt 0 ] || problem "environment 'release' has no required reviewers"
+          [ "$self" = "true" ] || problem "environment 'release' does not have 'Prevent self-review' on"
+          [ "$branches" = "true" ] || problem "environment 'release' is not limited to selected branches (main)"
+          echo "environment 'release': $reviewers required reviewer(s), self-review prevented: $self, branch policy: $branches"
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check listing, version, commit and tag
+        id: check
+        env:
+          LISTING: ${{ inputs.listing }}
+          VERSION: ${{ inputs.version }}
+          COMMIT: ${{ inputs.commit }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          set -euo pipefail
+          fail() { echo "::error::$1"; exit 1; }
+
+          [[ "$LISTING" =~ ^[a-z0-9][a-z0-9-]{0,63}$ ]] || fail "listing '$LISTING' is not a listing id (lowercase slug)"
+          [[ "$VERSION" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]] || fail "version '$VERSION' is not major.minor.patch"
+          tag="$LISTING-v$VERSION"
+
+          git fetch -q origin main
+          main="$(git rev-parse origin/main)"
+          if [ -z "$COMMIT" ]; then
+            sha="$main"
+          else
+            [[ "$COMMIT" =~ ^[0-9a-f]{40}$ ]] || fail "commit must be a full 40-character SHA"
+            sha="$(git rev-parse -q --verify "$COMMIT^{commit}")" || fail "commit $COMMIT does not exist"
+          fi
+          git merge-base --is-ancestor "$sha" "$main" || fail "commit $sha is not on main"
+
+          count="$(git show "$sha:marketplace.json" | jq --arg id "$LISTING" '[.listings[] | select(.id == $id)] | length')"
+          [ "$count" = "1" ] || fail "marketplace.json at $sha has $count listings with id '$LISTING' (expected 1)"
+          ref="$(git show "$sha:marketplace.json" | jq -r --arg id "$LISTING" '.listings[] | select(.id == $id) | .ref')"
+          [ "$ref" = "$tag" ] || fail "at $sha the listing's ref is '$ref', not '$tag'. Merge the ref change first, or pass the commit that has it"
+
+          # Never move or overwrite: the tag must not exist, locally or on the remote.
+          git fetch -q --tags origin
+          if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
+            fail "tag $tag already exists (on $(git rev-parse "refs/tags/$tag^{commit}")). Tags are never moved; release a new version"
+          fi
+          if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null; then
+            fail "tag $tag already exists on the remote. Tags are never moved; release a new version"
+          fi
+
+          # The new version must be above every existing release tag of this listing.
+          latest="$(git tag -l "$LISTING-v*" | sed -n "s/^$LISTING-v\([0-9]*\.[0-9]*\.[0-9]*\)$/\1/p" | sort -V | tail -n 1)"
+          if [ -n "$latest" ] && [ "$(printf '%s\n%s\n' "$latest" "$VERSION" | sort -V | tail -n 1)" != "$VERSION" ]; then
+            fail "version $VERSION is not above the latest tag $LISTING-v$latest"
+          fi
+
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          {
+            echo "### Release $tag"
+            echo "- commit: \`$sha\` ($(git log -1 --format=%s "$sha"))"
+            echo "- previous release of $LISTING: ${latest:+$LISTING-v$latest}${latest:-none}"
+            echo "- dry run: $DRY_RUN"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  validate:
+    name: validate the commit
+    needs: resolve
+    uses: ./.github/workflows/validate.yml
+    with:
+      ref: ${{ needs.resolve.outputs.sha }}
+
+  tag:
+    name: create the tag
+    needs: [resolve, validate]
+    if: ${{ !inputs.dry_run }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: release
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SHA: ${{ needs.resolve.outputs.sha }}
+      TAG: ${{ needs.resolve.outputs.tag }}
+    steps:
+      - name: Create the lightweight tag
+        run: |
+          set -euo pipefail
+          # The approval may come long after the checks: look again right before creating.
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$TAG" >/dev/null 2>&1; then
+            echo "::error::tag $TAG was created while this run waited. Tags are never moved; nothing was changed"
+            exit 1
+          fi
+          # Creating a ref fails if it exists, so this never overwrites a tag.
+          gh api -X POST "repos/$GITHUB_REPOSITORY/git/refs" -f ref="refs/tags/$TAG" -f sha="$SHA" >/dev/null
+
+      - name: Check the tag
+        run: |
+          set -euo pipefail
+          got="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$TAG" --jq '.object.type + " " + .object.sha')"
+          if [ "$got" != "commit $SHA" ]; then
+            echo "::error::tag $TAG is '$got', expected 'commit $SHA'"
+            exit 1
+          fi
+          echo "- created \`$TAG\` -> \`$SHA\` (approved in environment \`release\`)" >> "$GITHUB_STEP_SUMMARY"

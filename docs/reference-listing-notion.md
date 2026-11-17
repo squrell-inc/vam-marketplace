@@ -323,7 +323,7 @@ Tags are never moved. If the side-branch commit changes, push a new test tag, su
 
 ### Stage 4: release
 
-Covered in section 9. In short: on `main`, add the index entry with `notion-v1.0.0`, and remove the temporary CI step. A maintainer tags the merge commit and pushes the tag. On the node, import again at `--ref notion-v1.0.0`. This updates the test install to the release.
+Covered in section 9. In short: on `main`, add the index entry with `notion-v1.0.0`, and remove the temporary CI step. A maintainer runs the release workflow to tag the merge commit. On the node, import again at `--ref notion-v1.0.0`. This updates the test install to the release.
 
 If the capability summary changed since the test tag, the connector needs Enable again (gotcha 8).
 
@@ -338,15 +338,10 @@ Nodes install only at `ref`. A branch is never installed. A moved tag is refused
 **Steps:**
 1. Open a pull request with the listing, the temporary CI step removed, and the index entry with `"ref": "notion-v1.0.0"`. The tag does not exist yet. CI shows a notice for that, not an error.
 2. CI is green. A `CODEOWNERS` owner reviews. Merge.
-3. A maintainer tags the merge commit and pushes the tag:
+3. A maintainer runs the **release listing** workflow in Actions on `main`, with listing `notion` and version `1.0.0`. Leave the commit empty for the head of `main`, or give the merge commit's full SHA. Run it as a dry run first.
 
-   ```
-   git tag notion-v1.0.0 <merge commit>
-   git push origin notion-v1.0.0
-   ```
-
-   The tag push runs CI again. This time it fails hard if the tag is missing, or if the tree at the tag does not validate.
-4. **Never move or re-push a tag.** To change anything, bump the version: new content, new `ref` (for example `notion-v1.0.1`), merge, tag.
+   The workflow checks that the index at that commit names `notion-v1.0.0`, that the commit is on `main` and that the tag does not exist. It then runs the full CI validation on that commit. Without dry run, it waits for a `CODEOWNERS` owner to approve in the `release` environment, then creates the tag. Nobody pushes release tags by hand (see the README, "Release a listing").
+4. **Never move or re-push a tag.** To change anything, bump the version: new content, new `ref` (for example `notion-v1.0.1`), merge, run the release workflow.
 
 **Versions on later changes** [code]:
 - A skill needs a new `version` in `manifest.json` and in the `SKILLS.md` frontmatter.

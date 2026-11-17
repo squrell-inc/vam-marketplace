@@ -56,12 +56,31 @@ A release is a per-listing tag named `<listing id>-v<major>.<minor>.<patch>` (`m
 on the commit that holds exactly what the listing should install. The index at that commit names the
 tag in the listing's `ref`. Nodes import a listing only at its `ref`; a branch is never installed,
 and a tag that is moved is refused by nodes that already recorded it. Publish a new version by
-changing the content and `ref` in a pull request, merging it, then tagging the merge commit.
+changing the content and `ref` in a pull request, merging it, then tagging the merge commit with the
+release workflow:
+
+1. In Actions, open **release listing** and choose **Run workflow** on `main`. Enter the listing id
+   and the version (`1.0.1`). Leave the commit empty to tag the head of `main`, or give the full SHA of
+   the merge commit if more has been merged since.
+2. Run it with **Dry run** checked first. It checks that the listing at that commit names
+   `<id>-v<version>` as its `ref`, that the commit is on `main`, that the tag does not exist and that
+   the version is above the listing's last release, then runs the full validation (`validate.yml`)
+   on that commit. Nothing is created.
+3. Run it again with **Dry run** unchecked. After the same checks, the run waits for an approver of
+   the `release` environment (the `CODEOWNERS` owners; you cannot approve your own run). On approval it
+   creates the lightweight tag on that commit and checks that it points there.
+
+The workflow never moves, overwrites or deletes a tag. If a tag is wrong, release a new version.
+Release tags (`*-v*`) are protected by a repository ruleset: they cannot be updated or deleted by
+anyone, and only the release workflow creates them. Maintainers may still create a test tag for a
+private pre-release import on a side branch (see Contributing).
 
 ## CI
 
-`.github/workflows/validate.yml` runs on every pull request and tag push. It builds `vam-cli` at a
-pinned ref of the public VAM repository, then:
+`.github/workflows/validate.yml` runs on every pull request and tag push, and the release workflow
+(`.github/workflows/release.yml`) calls it on the commit it is about to tag, because a tag created by
+the workflow does not start a tag-push run. It builds `vam-cli` at a pinned ref of the public VAM
+repository, then:
 
 - runs `vam catalog validate . --strict` on the repository. The one accepted warning is
   `calendar_find_slots` being READ_ONLY while it POSTs (Graph's `findMeetingTimes` is a POST that only
@@ -84,5 +103,6 @@ non-Squrell content; the content and tags are identical, so listings install the
 ## Contributing
 
 Changes to `microsoft-365` go through a pull request reviewed by the owners in `CODEOWNERS`. Do not
-push release tags that are not on a merged commit, and never move one. A test tag for a private
-pre-release import (for example `notion-v0.1.0` on a side branch) is allowed.
+create release tags by hand: use the release workflow, and never move or delete a tag. A test tag
+for a private pre-release import (for example `notion-v0.1.0` on a side branch) is allowed; a
+maintainer creates it by hand, and it is never reused on `main`.
