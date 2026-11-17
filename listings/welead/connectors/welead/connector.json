@@ -10,19 +10,10 @@
     "profile": "discover",
     "clientSecret": "none",
     "scopes": [
+      "mcp",
       "leads:read",
       "leads:write",
-      "activities:read",
-      "activities:write",
-      "comments:read",
-      "comments:write",
-      "attachments:read",
-      "attachments:write",
-      "approvals:read",
-      "approvals:write",
-      "clients:read",
-      "clients:write",
-      "orgs:read"
+      "offline_access"
     ],
     "orgConsent": "none"
   },
