@@ -1,0 +1,87 @@
+{
+  "spec": {
+    "resourceId": { "urn": "urn:vam:playbook:hub.squrell.cloud/squrell/file-ticket" },
+    "displayName": "File a ticket",
+    "description": "Turn a request into a WeTrack ticket: find the project, draft the ticket, ask the member to approve it, then create it.",
+    "activation": {
+      "when": "Use when the member wants a new ticket filed in WeTrack from a request or a piece of work they describe.",
+      "examples": ["File a ticket on the mobile project: the login screen drops the session after refresh."]
+    },
+    "requires": {
+      "skills": [
+        { "resourceId": { "urn": "urn:vam:skill:hub.squrell.cloud/squrell/wetrack-workspace" } }
+      ]
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "request": { "type": "string", "description": "What the ticket should capture" },
+        "projectHint": { "type": "string", "description": "Words that name the WeTrack project, such as 'mobile'" }
+      },
+      "required": ["request"],
+      "additionalProperties": false
+    },
+    "steps": [
+      {
+        "id": "find-project",
+        "description": "Find the WeTrack project the ticket belongs to.",
+        "kind": "STEP_KIND_TASK",
+        "mode": "STEP_MODE_AGENTIC",
+        "instruction": "Load the wetrack-workspace skill. Use wetrack__vtrack_list_projects and, if a projectHint was given, match it. Pick the best project and record its id and name. If nothing fits, complete the step with the outcome failed and say what you searched for. Do not create a ticket in this step.",
+        "evidence": { "tool": "wetrack__vtrack_list_projects", "result": "success" },
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "projectId": { "type": "string" },
+            "projectName": { "type": "string" }
+          },
+          "required": ["projectId", "projectName"]
+        }
+      },
+      {
+        "id": "draft-ticket",
+        "description": "Write the ticket the member will review.",
+        "kind": "STEP_KIND_TASK",
+        "mode": "STEP_MODE_AGENTIC",
+        "after": ["find-project"],
+        "instruction": "From the request input, write one ticket: a short title and a description that states the problem and the expected outcome. Use only what is in the request; do not invent assignees, story points, sprint names or dates. Record the title and the description. Do not create anything in WeTrack in this step.",
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "title": { "type": "string" },
+            "description": { "type": "string" }
+          },
+          "required": ["title", "description"]
+        }
+      },
+      {
+        "id": "approve",
+        "description": "The member reads the draft and decides.",
+        "kind": "STEP_KIND_GATE",
+        "after": ["draft-ticket"],
+        "question": "Create the ticket '{{steps.draft-ticket.output.title}}' in '{{steps.find-project.output.projectName}}' on WeTrack?",
+        "timeout": "86400s",
+        "options": [
+          { "label": "approved", "description": "Create the ticket as drafted" },
+          { "label": "rejected", "description": "Stop without creating anything", "terminal": "OUTCOME_TERMINAL_SUCCEEDED" }
+        ]
+      },
+      {
+        "id": "create-ticket",
+        "description": "Create the approved ticket.",
+        "kind": "STEP_KIND_TASK",
+        "mode": "STEP_MODE_AGENTIC",
+        "after": ["approve:approved"],
+        "instruction": "Call wetrack__vtrack_create_ticket once to create the drafted ticket in the project found in find-project, with the title and description from draft-ticket exactly as approved. Do not set a sprint, assignee or story points. Then tell the member the ticket title and which project it is in.",
+        "evidence": { "tool": "wetrack__vtrack_create_ticket", "result": "success" }
+      }
+    ],
+    "guards": [
+      {
+        "tools": ["wetrack__vtrack_create_ticket"],
+        "sideEffects": ["SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL"],
+        "allowedWhen": ["approve:approved"]
+      }
+    ]
+  }
+}

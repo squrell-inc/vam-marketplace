@@ -49,6 +49,32 @@
       ],
       "ref": "notion-v1.0.0",
       "requiresNode": ">=0.1.0"
+    },
+    {
+      "id": "wetrack",
+      "displayName": "WeTrack MCP",
+      "description": "Read and update the member's WeTrack tickets, sprints and documents through their own WeTrack connection. Changes are made only after the member approves.",
+      "connector": "urn:vam:connector:hub.squrell.cloud/squrell/wetrack",
+      "artifacts": [
+        {
+          "kind": "connector",
+          "path": "listings/wetrack/connectors/wetrack"
+        },
+        {
+          "kind": "skill",
+          "path": "listings/wetrack/skills/wetrack-workspace"
+        },
+        {
+          "kind": "playbook",
+          "path": "listings/wetrack/playbooks/file-ticket"
+        },
+        {
+          "kind": "agent",
+          "path": "listings/wetrack/agents/wetrack-assistant"
+        }
+      ],
+      "ref": "wetrack-v1.0.0",
+      "requiresNode": ">=0.1.0"
     }
   ]
 }

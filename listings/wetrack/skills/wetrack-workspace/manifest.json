@@ -1,0 +1,7 @@
+{
+  "resourceId": { "urn": "urn:vam:skill:hub.squrell.cloud/squrell/wetrack-workspace" },
+  "version": { "major": 1, "minor": 0, "patch": 0 },
+  "description": "How to read and update the member's WeTrack tickets, sprints and documents with the WeTrack connector's tools.",
+  "requiresConnector": "urn:vam:connector:hub.squrell.cloud/squrell/wetrack",
+  "tools": []
+}

@@ -9,6 +9,7 @@ and admits them read-only, marked as Squrell content.
 |---|---|
 | `microsoft-365` | the `m365-mail` skill (search, read, draft, send, calendar, free times), the Executive assistant agent, the Morning triage playbook. Needs the Microsoft 365 connector built into VAM. |
 | `notion` | a connector for Notion's hosted MCP server (search and fetch run freely, creating pages asks first), the `notion-workspace` skill, the Publish meeting notes playbook, the Notion assistant agent. |
+| `wetrack` | a connector for WeTrack's hosted MCP server at `https://wetrack.vithiit.com/api/mcp` (reads run freely, ticket, comment and sprint writes ask first), the `wetrack-workspace` skill, the File a ticket playbook, the WeTrack assistant agent. |
 
 Licence: Apache-2.0 (see `LICENSE`).
 
