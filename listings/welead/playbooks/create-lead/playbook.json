@@ -1,0 +1,89 @@
+{
+  "spec": {
+    "resourceId": { "urn": "urn:vam:playbook:hub.squrell.cloud/squrell/create-lead" },
+    "displayName": "Create a lead",
+    "description": "Capture a new sales opportunity in WeLead: verify client, draft lead details, ask the member to approve it, then create the lead.",
+    "activation": {
+      "when": "Use when the member wants to create or register a new sales lead or business opportunity in WeLead.",
+      "examples": ["Create a lead for Adriti: Aerodynamic analysis for Drone Corp, expected 15 Lakhs."]
+    },
+    "requires": {
+      "skills": [
+        { "resourceId": { "urn": "urn:vam:skill:hub.squrell.cloud/squrell/welead-workspace" } }
+      ]
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "request": { "type": "string", "description": "What the lead should capture" },
+        "companyHint": { "type": "string", "description": "Corporate client or company name" },
+        "org": { "type": "string", "description": "Target tenant organization (e.g. adriti or vithi)" }
+      },
+      "required": ["request"],
+      "additionalProperties": false
+    },
+    "steps": [
+      {
+        "id": "find-client",
+        "description": "Look up existing corporate client in WeLead if companyHint is provided.",
+        "kind": "STEP_KIND_TASK",
+        "mode": "STEP_MODE_AGENTIC",
+        "instruction": "Load the welead-workspace skill. If companyHint is provided, use welead__list_clients with search to check if an existing client matches. Record the clientId if found, or empty string if not found. Do not create a client or lead in this step.",
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "clientId": { "type": "string" },
+            "clientName": { "type": "string" }
+          },
+          "required": ["clientId", "clientName"]
+        }
+      },
+      {
+        "id": "draft-lead",
+        "description": "Draft the lead details for member review.",
+        "kind": "STEP_KIND_TASK",
+        "mode": "STEP_MODE_AGENTIC",
+        "after": ["find-client"],
+        "instruction": "From the request input and find-client output, draft one lead: customer_name or company, project_name, expected value in Lakhs, and forecast_stage. Record the drafted values. Do not call create_lead in this step.",
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "customerName": { "type": "string" },
+            "projectName": { "type": "string" },
+            "valueLakhs": { "type": "number" },
+            "summary": { "type": "string" }
+          },
+          "required": ["customerName", "projectName", "valueLakhs", "summary"]
+        }
+      },
+      {
+        "id": "approve",
+        "description": "The member reviews the draft and approves.",
+        "kind": "STEP_KIND_GATE",
+        "after": ["draft-lead"],
+        "question": "Create lead '{{steps.draft-lead.output.projectName}}' for '{{steps.draft-lead.output.customerName}}' (₹{{steps.draft-lead.output.valueLakhs}} Lakhs) in WeLead?",
+        "timeout": "86400s",
+        "options": [
+          { "label": "approved", "description": "Create the lead as drafted" },
+          { "label": "rejected", "description": "Stop without creating anything", "terminal": "OUTCOME_TERMINAL_SUCCEEDED" }
+        ]
+      },
+      {
+        "id": "create-lead",
+        "description": "Create the approved lead.",
+        "kind": "STEP_KIND_TASK",
+        "mode": "STEP_MODE_AGENTIC",
+        "after": ["approve:approved"],
+        "instruction": "Call welead__create_lead once to create the drafted lead with the customer_name, project_name, value_lakhs, and client_id (if found) exactly as approved. Then report the created lead reference and details to the member.",
+        "evidence": { "tool": "welead__create_lead", "result": "success" }
+      }
+    ],
+    "guards": [
+      {
+        "tools": ["welead__create_lead"],
+        "sideEffects": ["SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL"],
+        "allowedWhen": ["approve:approved"]
+      }
+    ]
+  }
+}

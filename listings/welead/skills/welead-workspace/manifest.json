@@ -1,0 +1,7 @@
+{
+  "resourceId": { "urn": "urn:vam:skill:hub.squrell.cloud/squrell/welead-workspace" },
+  "version": { "major": 1, "minor": 0, "patch": 0 },
+  "description": "How to read and update the member's WeLead pipeline leads, activities, corporate clients, comments and approvals with the WeLead connector's tools.",
+  "requiresConnector": "urn:vam:connector:hub.squrell.cloud/squrell/welead",
+  "tools": []
+}

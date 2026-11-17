@@ -1,0 +1,47 @@
+{
+  "urn": "urn:vam:connector:hub.squrell.cloud/squrell/welead",
+  "version": "1.0.0",
+  "displayName": "WeLead MCP",
+  "publisher": "WeLead (hosted MCP server)",
+  "description": "Read and update the member's WeLead pipeline leads, activities, corporate clients, comments, attachments and approval requests through WeLead's hosted MCP server. Writes wait for the member's approval.",
+  "icon": "welead",
+  "provider": {
+    "kind": "oauth2",
+    "profile": "discover",
+    "clientSecret": "none",
+    "scopes": [
+      "mcp",
+      "leads:read",
+      "leads:write",
+      "offline_access"
+    ],
+    "orgConsent": "none"
+  },
+  "connection": { "holder": "user", "multiAccount": false, "label": "WeLead account" },
+  "mcp": {
+    "url": "https://welead.vithiit.com/mcp",
+    "tools": [
+      { "remote": "list_leads", "sideEffect": "READ_ONLY" },
+      { "remote": "get_lead", "sideEffect": "READ_ONLY" },
+      { "remote": "get_pipeline_summary", "sideEffect": "READ_ONLY" },
+      { "remote": "export_leads_excel", "sideEffect": "READ_ONLY" },
+      { "remote": "list_activities", "sideEffect": "READ_ONLY" },
+      { "remote": "list_comments", "sideEffect": "READ_ONLY" },
+      { "remote": "list_attachments", "sideEffect": "READ_ONLY" },
+      { "remote": "list_approvals", "sideEffect": "READ_ONLY" },
+      { "remote": "list_organizations", "sideEffect": "READ_ONLY" },
+      { "remote": "list_clients", "sideEffect": "READ_ONLY" },
+      { "remote": "get_client", "sideEffect": "READ_ONLY" },
+      { "remote": "create_lead", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "update_lead", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "update_lead_status", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "delete_lead", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "log_activity", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "create_comment", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "create_attachment", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "decide_approval", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "create_client", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "update_client", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" }
+    ]
+  }
+}

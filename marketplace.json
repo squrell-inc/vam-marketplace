@@ -75,6 +75,32 @@
       ],
       "ref": "wetrack-v1.0.0",
       "requiresNode": ">=0.1.0"
+    },
+    {
+      "id": "welead",
+      "displayName": "WeLead MCP",
+      "description": "Read and update the member's WeLead pipeline leads, deals, corporate clients, activities, comments, attachments and approvals through their own WeLead connection. Changes are made only after the member approves.",
+      "connector": "urn:vam:connector:hub.squrell.cloud/squrell/welead",
+      "artifacts": [
+        {
+          "kind": "connector",
+          "path": "listings/welead/connectors/welead"
+        },
+        {
+          "kind": "skill",
+          "path": "listings/welead/skills/welead-workspace"
+        },
+        {
+          "kind": "playbook",
+          "path": "listings/welead/playbooks/create-lead"
+        },
+        {
+          "kind": "agent",
+          "path": "listings/welead/agents/welead-assistant"
+        }
+      ],
+      "ref": "welead-v1.0.0",
+      "requiresNode": ">=0.1.0"
     }
   ]
 }

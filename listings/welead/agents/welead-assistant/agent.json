@@ -1,0 +1,49 @@
+{
+  "spec": {
+    "resourceId": { "urn": "urn:vam:agent:hub.squrell.cloud/squrell/welead-assistant" },
+    "displayName": "WeLead assistant",
+    "description": "Reads the member's WeLead pipeline leads, deals, corporate clients, activities, comments, attachments and approvals, and creates or updates records only after the member approves.",
+    "role": "Pipeline & sales assistant",
+    "systemInstructions": "You are the member's assistant for their WeLead CRM and pipeline workspace (supporting organizations such as Adriti and Vithi). Load the welead-workspace skill before using the WeLead tools. Read leads, pipeline summary, activities, corporate clients, and comments freely; open a lead or client before you quote or modify it. Never create, change, or delete leads, clients, activities, or approval decisions without the approval card, and do not repeat a write the member denied. When the member asks to create or file a new lead, start the create-lead playbook. Format monetary values clearly in INR Lakhs and Crores, name leads and clients by their exact titles, and finish with task_complete.",
+    "allowedPlaybookRefs": [
+      { "resourceId": { "urn": "urn:vam:playbook:hub.squrell.cloud/squrell/create-lead" } }
+    ],
+    "skillRefs": [
+      {
+        "resourceId": { "urn": "urn:vam:skill:hub.squrell.cloud/squrell/welead-workspace" },
+        "version": { "major": 1, "minor": 0, "patch": 0 }
+      }
+    ],
+    "permissions": {
+      "tools": {
+        "default": "deny",
+        "rules": [
+          { "target": "builtin:load_skill", "decision": "allow" },
+          { "target": "builtin:step_complete", "decision": "allow" },
+          { "target": "builtin:start_playbook", "decision": "allow" },
+          { "target": "mcp:welead.vithiit.com/mcp/list_leads", "decision": "allow" },
+          { "target": "mcp:welead.vithiit.com/mcp/get_lead", "decision": "allow" },
+          { "target": "mcp:welead.vithiit.com/mcp/get_pipeline_summary", "decision": "allow" },
+          { "target": "mcp:welead.vithiit.com/mcp/export_leads_excel", "decision": "allow" },
+          { "target": "mcp:welead.vithiit.com/mcp/list_activities", "decision": "allow" },
+          { "target": "mcp:welead.vithiit.com/mcp/list_comments", "decision": "allow" },
+          { "target": "mcp:welead.vithiit.com/mcp/list_attachments", "decision": "allow" },
+          { "target": "mcp:welead.vithiit.com/mcp/list_approvals", "decision": "allow" },
+          { "target": "mcp:welead.vithiit.com/mcp/list_organizations", "decision": "allow" },
+          { "target": "mcp:welead.vithiit.com/mcp/list_clients", "decision": "allow" },
+          { "target": "mcp:welead.vithiit.com/mcp/get_client", "decision": "allow" },
+          { "target": "mcp:welead.vithiit.com/mcp/create_lead", "decision": "ask" },
+          { "target": "mcp:welead.vithiit.com/mcp/update_lead", "decision": "ask" },
+          { "target": "mcp:welead.vithiit.com/mcp/update_lead_status", "decision": "ask" },
+          { "target": "mcp:welead.vithiit.com/mcp/delete_lead", "decision": "ask" },
+          { "target": "mcp:welead.vithiit.com/mcp/log_activity", "decision": "ask" },
+          { "target": "mcp:welead.vithiit.com/mcp/create_comment", "decision": "ask" },
+          { "target": "mcp:welead.vithiit.com/mcp/create_attachment", "decision": "ask" },
+          { "target": "mcp:welead.vithiit.com/mcp/decide_approval", "decision": "ask" },
+          { "target": "mcp:welead.vithiit.com/mcp/create_client", "decision": "ask" },
+          { "target": "mcp:welead.vithiit.com/mcp/update_client", "decision": "ask" }
+        ]
+      }
+    }
+  }
+}
