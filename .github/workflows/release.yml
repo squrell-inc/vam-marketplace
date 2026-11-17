@@ -43,6 +43,9 @@ jobs:
     name: check the release
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: read # read the release environment's protection rules
     outputs:
       sha: ${{ steps.check.outputs.sha }}
       tag: ${{ steps.check.outputs.tag }}
@@ -52,6 +55,29 @@ jobs:
         run: |
           echo "::error::Run this workflow from main (it ran from $GITHUB_REF), so its checks are the reviewed ones."
           exit 1
+
+      # A job that names an environment that does not exist creates it with no protection, so the tag
+      # job would run unapproved. Refuse a real run unless `release` exists with required reviewers and
+      # self-review prevention, and allows only main. Checked here, before the tag job can create it.
+      - name: Check the release environment's protection
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          set -euo pipefail
+          level=error; [ "$DRY_RUN" = "true" ] && level=warning
+          problem() { echo "::$level::$1"; [ "$level" = "warning" ] || exit 1; }
+          if ! env_json="$(gh api "repos/$GITHUB_REPOSITORY/environments/release" 2>&1)"; then
+            problem "environment 'release' is missing or unreadable ($env_json). Create it in Settings, Environments, with required reviewers and 'Prevent self-review', limited to main"
+            exit 0
+          fi
+          reviewers="$(echo "$env_json" | jq '[.protection_rules[]? | select(.type == "required_reviewers") | .reviewers[]?] | length')"
+          self="$(echo "$env_json" | jq '[.protection_rules[]? | select(.type == "required_reviewers") | .prevent_self_review] | any')"
+          branches="$(echo "$env_json" | jq '.deployment_branch_policy != null')"
+          [ "$reviewers" -gt 0 ] || problem "environment 'release' has no required reviewers"
+          [ "$self" = "true" ] || problem "environment 'release' does not have 'Prevent self-review' on"
+          [ "$branches" = "true" ] || problem "environment 'release' is not limited to selected branches (main)"
+          echo "environment 'release': $reviewers required reviewer(s), self-review prevented: $self, branch policy: $branches"
 
       - uses: actions/checkout@v4
         with:
