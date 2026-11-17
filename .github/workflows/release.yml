@@ -58,7 +58,8 @@ jobs:
 
       # A job that names an environment that does not exist creates it with no protection, so the tag
       # job would run unapproved. Refuse a real run unless `release` exists with required reviewers and
-      # self-review prevention, and allows only main. Checked here, before the tag job can create it.
+      # self-review prevention, allows only main, and does not let administrators skip the approval.
+      # Checked here, before the tag job can create the environment.
       - name: Check the release environment's protection
         env:
           GH_TOKEN: ${{ github.token }}
@@ -74,10 +75,12 @@ jobs:
           reviewers="$(echo "$env_json" | jq '[.protection_rules[]? | select(.type == "required_reviewers") | .reviewers[]?] | length')"
           self="$(echo "$env_json" | jq '[.protection_rules[]? | select(.type == "required_reviewers") | .prevent_self_review] | any')"
           branches="$(echo "$env_json" | jq '.deployment_branch_policy != null')"
+          bypass="$(echo "$env_json" | jq '.can_admins_bypass')"
           [ "$reviewers" -gt 0 ] || problem "environment 'release' has no required reviewers"
           [ "$self" = "true" ] || problem "environment 'release' does not have 'Prevent self-review' on"
           [ "$branches" = "true" ] || problem "environment 'release' is not limited to selected branches (main)"
-          echo "environment 'release': $reviewers required reviewer(s), self-review prevented: $self, branch policy: $branches"
+          [ "$bypass" = "false" ] || problem "environment 'release' lets administrators bypass its protection rules (can_admins_bypass: $bypass). Untick 'Allow administrators to bypass configured protection rules'"
+          echo "environment 'release': $reviewers required reviewer(s), self-review prevented: $self, branch policy: $branches, admin bypass: $bypass"
 
       - uses: actions/checkout@v4
         with:
@@ -153,6 +156,7 @@ jobs:
     environment: release
     permissions:
       contents: write
+      actions: read # read who approved this run, for the summary
     env:
       GH_TOKEN: ${{ github.token }}
       SHA: ${{ needs.resolve.outputs.sha }}
@@ -177,4 +181,7 @@ jobs:
             echo "::error::tag $TAG is '$got', expected 'commit $SHA'"
             exit 1
           fi
-          echo "- created \`$TAG\` -> \`$SHA\` (approved in environment \`release\`)" >> "$GITHUB_STEP_SUMMARY"
+          # Record who let the job through, as GitHub reports it (for example "approved by alice").
+          approvals="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/approvals" \
+            --jq '[.[] | select(any(.environments[]; .name == "release")) | "\(.state) by \(.user.login)"] | join(", ")' 2>/dev/null || true)"
+          echo "- created \`$TAG\` -> \`$SHA\` (environment \`release\`: ${approvals:-no approval recorded})" >> "$GITHUB_STEP_SUMMARY"

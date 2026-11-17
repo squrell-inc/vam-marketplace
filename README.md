@@ -67,8 +67,9 @@ release workflow:
    the version is above the listing's last release, then runs the full validation (`validate.yml`)
    on that commit. Nothing is created.
 3. Run it again with **Dry run** unchecked. After the same checks, the run waits for an approver of
-   the `release` environment (the `CODEOWNERS` owners; you cannot approve your own run). On approval it
-   creates the lightweight tag on that commit and checks that it points there.
+   the `release` environment (the `CODEOWNERS` owners; you cannot approve your own run, and
+   administrators cannot skip the approval). On approval it creates the lightweight tag on that commit
+   and checks that it points there.
 
 The workflow never moves, overwrites or deletes a tag. If a tag is wrong, release a new version.
 Release tags (`*-v*`) are protected by a repository ruleset: they cannot be updated or deleted by
