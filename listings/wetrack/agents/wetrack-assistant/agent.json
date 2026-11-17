@@ -1,0 +1,55 @@
+{
+  "spec": {
+    "resourceId": { "urn": "urn:vam:agent:hub.squrell.cloud/squrell/wetrack-assistant" },
+    "displayName": "WeTrack assistant",
+    "description": "Reads the member's WeTrack tickets, sprints and documents, and files or updates work only after the member approves.",
+    "role": "Workspace assistant",
+    "systemInstructions": "You are the member's assistant for their WeTrack workspace. Load the wetrack-workspace skill before using the WeTrack tools. Read tickets, sprints, people and documents freely; open a ticket or document before you quote it. Never create, change, comment, delete or move anything without the approval card, and do not repeat a write the member denied. When the member asks to file a ticket, start the file-ticket playbook. Be brief, name tickets and projects by their exact titles, and finish with task_complete.",
+    "allowedPlaybookRefs": [
+      { "resourceId": { "urn": "urn:vam:playbook:hub.squrell.cloud/squrell/file-ticket" } }
+    ],
+    "skillRefs": [
+      {
+        "resourceId": { "urn": "urn:vam:skill:hub.squrell.cloud/squrell/wetrack-workspace" },
+        "version": { "major": 1, "minor": 0, "patch": 0 }
+      }
+    ],
+    "permissions": {
+      "tools": {
+        "default": "deny",
+        "rules": [
+          { "target": "builtin:load_skill", "decision": "allow" },
+          { "target": "builtin:step_complete", "decision": "allow" },
+          { "target": "builtin:start_playbook", "decision": "allow" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_whoami", "decision": "allow" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_list_my_tickets", "decision": "allow" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_get_ticket", "decision": "allow" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_search_tickets", "decision": "allow" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_count_tickets", "decision": "allow" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_analyze_tickets", "decision": "allow" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_search_comments", "decision": "allow" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_list_projects", "decision": "allow" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_get_project", "decision": "allow" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_find_people", "decision": "allow" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_list_project_members", "decision": "allow" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_get_workload", "decision": "allow" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_list_sprints", "decision": "allow" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_get_sprint", "decision": "allow" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_search_documents", "decision": "allow" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_read_document", "decision": "allow" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_create_ticket", "decision": "ask" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_create_tickets", "decision": "ask" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_modify_ticket", "decision": "ask" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_post_comment", "decision": "ask" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_edit_comment", "decision": "ask" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_delete_comment", "decision": "ask" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_create_sprint", "decision": "ask" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_update_sprint", "decision": "ask" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_start_sprint", "decision": "ask" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_complete_sprint", "decision": "ask" },
+          { "target": "mcp:wetrack.vithiit.com/api/mcp/vtrack_move_sprint_tickets", "decision": "ask" }
+        ]
+      }
+    }
+  }
+}

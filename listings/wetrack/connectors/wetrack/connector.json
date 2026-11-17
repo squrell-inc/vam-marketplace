@@ -1,0 +1,55 @@
+{
+  "urn": "urn:vam:connector:hub.squrell.cloud/squrell/wetrack",
+  "version": "1.0.0",
+  "displayName": "WeTrack MCP",
+  "publisher": "WeTrack (hosted MCP server)",
+  "description": "Read and update the member's own V-Track tickets, sprints and documents through WeTrack's hosted MCP server. Writes wait for the member's approval.",
+  "icon": "wetrack",
+  "provider": {
+    "kind": "oauth2",
+    "profile": "discover",
+    "clientSecret": "none",
+    "scopes": [
+      "tickets:read",
+      "tickets:write",
+      "comments:write",
+      "sprints:read",
+      "sprints:write",
+      "documents:read"
+    ],
+    "orgConsent": "none"
+  },
+  "connection": { "holder": "user", "multiAccount": false, "label": "WeTrack account" },
+  "mcp": {
+    "url": "https://wetrack.vithiit.com/api/mcp",
+    "tools": [
+      { "remote": "vtrack_whoami", "sideEffect": "READ_ONLY" },
+      { "remote": "vtrack_list_my_tickets", "sideEffect": "READ_ONLY" },
+      { "remote": "vtrack_get_ticket", "sideEffect": "READ_ONLY" },
+      { "remote": "vtrack_search_tickets", "sideEffect": "READ_ONLY" },
+      { "remote": "vtrack_count_tickets", "sideEffect": "READ_ONLY" },
+      { "remote": "vtrack_analyze_tickets", "sideEffect": "READ_ONLY" },
+      { "remote": "vtrack_search_comments", "sideEffect": "READ_ONLY" },
+      { "remote": "vtrack_list_projects", "sideEffect": "READ_ONLY" },
+      { "remote": "vtrack_get_project", "sideEffect": "READ_ONLY" },
+      { "remote": "vtrack_find_people", "sideEffect": "READ_ONLY" },
+      { "remote": "vtrack_list_project_members", "sideEffect": "READ_ONLY" },
+      { "remote": "vtrack_get_workload", "sideEffect": "READ_ONLY" },
+      { "remote": "vtrack_list_sprints", "sideEffect": "READ_ONLY" },
+      { "remote": "vtrack_get_sprint", "sideEffect": "READ_ONLY" },
+      { "remote": "vtrack_search_documents", "sideEffect": "READ_ONLY" },
+      { "remote": "vtrack_read_document", "sideEffect": "READ_ONLY" },
+      { "remote": "vtrack_create_ticket", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "vtrack_create_tickets", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "vtrack_modify_ticket", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "vtrack_post_comment", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "vtrack_edit_comment", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "vtrack_delete_comment", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "vtrack_create_sprint", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "vtrack_update_sprint", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "vtrack_start_sprint", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "vtrack_complete_sprint", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "vtrack_move_sprint_tickets", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" }
+    ]
+  }
+}
