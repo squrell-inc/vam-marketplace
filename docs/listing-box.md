@@ -19,9 +19,12 @@ exchange; the app never holds it).
 
 1. Box Admin Console: enable the Box MCP server integration, add integration credentials, and add
    the VAM app's redirect URI (`squrell://oauth`, check it with the app team).
-2. A `vamd` and app built from the Phase 5 branch: import this listing from this branch
-   (`vam catalog import https://github.com/squrell-inc/vam-marketplace --path listings/box --ref box-connector`,
-   or whatever Phase 5 allows for unreleased refs).
+2. A `vamd` and app built from the Phase 5 branch. A branch cannot be installed today: Box's URN is
+   under `hub.squrell.cloud`, so only the preconfigured Squrell marketplace may install it, its
+   index is read from `main`, and artifacts install only at tags. Phase 5 item CN-5.6 adds a staging
+   setting (`VAMD_SQURELL_MARKETPLACE_INDEX_REF=box-connector`) and the owner pushes a pre-release
+   tag `box-v1.0.0-rc.1` on this branch's commit. Until then, the only way is a local `vamd` built
+   with the `process-guest` feature, pointing the marketplace URL at a local clone.
 3. Org settings, Connectors, Box: enter the client id and secret, Enable.
 4. As a member: Connect, sign in to Box, then ask the Box assistant a question about a file.
 5. Check: no secret in any API listing or app response; a second refresh works (Box refresh tokens
