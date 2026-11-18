@@ -101,6 +101,32 @@
       ],
       "ref": "welead-v1.0.0",
       "requiresNode": ">=0.1.0"
+    },
+    {
+      "id": "box",
+      "displayName": "Box",
+      "description": "Find files in the member's Box and answer questions from them, through their own Box connection. Read-only. Needs the org admin to enter the client id and secret of their Box MCP server integration.",
+      "connector": "urn:vam:connector:hub.squrell.cloud/squrell/box",
+      "artifacts": [
+        {
+          "kind": "connector",
+          "path": "listings/box/connectors/box"
+        },
+        {
+          "kind": "skill",
+          "path": "listings/box/skills/box-documents"
+        },
+        {
+          "kind": "playbook",
+          "path": "listings/box/playbooks/answer-from-documents"
+        },
+        {
+          "kind": "agent",
+          "path": "listings/box/agents/box-assistant"
+        }
+      ],
+      "ref": "box-v1.0.0",
+      "requiresNode": ">=0.2.0"
     }
   ]
 }
