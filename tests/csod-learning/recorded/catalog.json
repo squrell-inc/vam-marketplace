@@ -1,0 +1,18 @@
+{
+  "data": {
+    "items": [
+      {
+        "ObjectId": "lo-1001",
+        "Title": "Compliance Foundations",
+        "TrainingType": "Online Course",
+        "Provider": "Cornerstone"
+      },
+      {
+        "ObjectId": "lo-1002",
+        "Title": "Safety Refresher",
+        "TrainingType": "Material",
+        "Provider": "Internal"
+      }
+    ]
+  }
+}

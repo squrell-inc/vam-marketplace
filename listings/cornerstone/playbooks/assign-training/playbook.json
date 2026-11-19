@@ -6,8 +6,7 @@
     "displayName": "Assign training",
     "description": "Find a learning object in the catalog and create a learning assignment after the member confirms. Writes only after approval.",
     "activation": {
-      "when": "Use when the member wants to assign a course or training to people in Cornerstone.",
-      "examples": ["Assign the security awareness course to the new hires."]
+      "when": "Use when the member wants to assign a course or training to people in Cornerstone."
     },
     "requires": {
       "skills": [
@@ -37,45 +36,29 @@
         "id": "find",
         "description": "Search the catalog for the training.",
         "kind": "STEP_KIND_TASK",
-        "mode": "STEP_MODE_AGENTIC",
-        "instruction": "Load the csod-learning skill. Call catalog_search with query set to the trainingHint input (or a short paraphrase of the member's request). Pick the best match and record its id and title. If nothing fits, complete the step with outcome failed and say what you searched for. Do not create an assignment in this step.",
-        "evidence": { "tool": "catalog_search", "result": "success" },
-        "outputSchema": {
-          "type": "object",
-          "properties": {
-            "objectId": { "type": "string" },
-            "title": { "type": "string" }
-          },
-          "required": ["objectId", "title"]
-        }
+        "mode": "STEP_MODE_ASSISTED",
+        "instruction": "Load the csod-learning skill. Call catalog_search with query set to the trainingHint input (or a short paraphrase of the member's request). Pick the best match and record its id and title. If nothing fits, complete the step with outcome failed and say what you searched for. Do not create an assignment in this step. Finish with step_complete."
       },
       {
         "id": "confirm",
         "description": "Ask the member before creating the assignment.",
         "kind": "STEP_KIND_GATE",
-        "after": ["find"],
-        "question": "Create a Cornerstone learning assignment for '{{steps.find.output.title}}'?",
-        "timeout": "86400s",
-        "options": [
-          { "label": "approved", "description": "Create the assignment" },
-          { "label": "denied", "description": "Stop without creating an assignment", "terminal": "OUTCOME_TERMINAL_SUCCEEDED" }
-        ]
+        "mode": "STEP_MODE_ASSISTED",
+        "gate": {
+          "question": "Create a Cornerstone learning assignment for the selected training?",
+          "options": [
+            { "id": "approved", "label": "approved" },
+            { "id": "denied", "label": "denied" }
+          ]
+        },
+        "instruction": "Show the chosen training title and id. Wait for the gate. If denied, stop without calling assignment_create."
       },
       {
         "id": "assign",
         "description": "Create the learning assignment after approval.",
         "kind": "STEP_KIND_TASK",
-        "mode": "STEP_MODE_AGENTIC",
-        "after": ["confirm:approved"],
-        "instruction": "Call assignment_create once with a clear name (assignmentName input or a short title) and a body that includes the learning object id from the find step and the users the member named. The tool will ask again on the approval card. Never bypass it. Then tell the member the assignment name and the training title.",
-        "evidence": { "tool": "assignment_create", "result": "success" }
-      }
-    ],
-    "guards": [
-      {
-        "tools": ["assignment_create"],
-        "sideEffects": ["SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL"],
-        "allowedWhen": ["confirm:approved"]
+        "mode": "STEP_MODE_ASSISTED",
+        "instruction": "Only if the gate was approved, call assignment_create with a clear name (assignmentName input or a short title) and a body that includes the learning object id from the find step and the users the member named. The tool will ask again on the approval card. Never bypass it. Finish with step_complete."
       }
     ]
   }

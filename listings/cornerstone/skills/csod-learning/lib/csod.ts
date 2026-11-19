@@ -1,11 +1,15 @@
 // Shared helpers for Cornerstone skill tools. Runs in the guest under Bun.
+// Portal host + scopes are hardcoded until VAM Enable supports baseUrl / scopes form fields.
 export const PLACEHOLDER = "vamsec_csod";
-export const DEFAULT_HOST = "example.csod.com";
+export const DEFAULT_HOST = "vithiit.csod.com";
+export const CSOD_BASE_URL = "https://vithiit.csod.com";
+export const CSOD_SCOPES = "globalsearch:read employee:read transcript:read";
 export class ToolError extends Error {}
 export function proxyEndpoint(): string {
   return process.env.VAM_EGRESS_ENDPOINT || "http://127.0.0.1:3128";
 }
 export function csodHost(): string {
+  // Hardcoded corp host (form wiring later). Tests may override with VAM_CSOD_HOST.
   const h = (process.env.VAM_CSOD_HOST || DEFAULT_HOST).trim().toLowerCase();
   if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?\.csod\.com$/.test(h)) {
     throw new ToolError("Cornerstone host must look like acme.csod.com.");

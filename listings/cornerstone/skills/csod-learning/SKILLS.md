@@ -1,4 +1,4 @@
----
+﻿---
 id: "urn:vam:skill:hub.squrell.cloud/squrell/csod-learning"
 name: "csod-learning"
 version: "1.0.1"

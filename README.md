@@ -11,7 +11,7 @@ and admits them read-only, marked as Squrell content.
 | `notion` | a connector for Notion's hosted MCP server (search and fetch run freely, creating pages asks first), the `notion-workspace` skill, the Publish meeting notes playbook, the Notion assistant agent. |
 | `wetrack` | a connector for WeTrack's hosted MCP server at `https://wetrack.vithiit.com/api/mcp` (reads run freely, ticket, comment and sprint writes ask first), the `wetrack-workspace` skill, the File a ticket playbook, the WeTrack assistant agent. |
 | `welead` | a connector for WeLead's hosted MCP server at `https://welead.vithiit.com/mcp` (reads run freely, lead, client, comment and approval writes ask first), the `welead-workspace` skill, the Create a lead playbook, the WeLead assistant agent. |
-| `cornerstone` | a connector for Cornerstone OnDemand (member sign-in, no client secret; reads run freely, writes ask first), the `csod-learning`, `csod-core-hr`, `csod-performance` and `csod-recruiting` skills, the Assign training playbook, the Cornerstone assistant agent. |
+| `cornerstone` | skills for Learning, Core/HR, Performance and Recruiting (writes ask first), the Assign training playbook, the Cornerstone assistant agent. Needs the **built-in** Cornerstone connector in VAM (admin enters Edge client id + secret at Enable; members use VAM Log In or SSO). See `docs/cornerstone-connector-contract.md`. |
 
 Licence: Apache-2.0 (see `LICENSE`).
 
