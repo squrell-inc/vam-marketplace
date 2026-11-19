@@ -1,0 +1,389 @@
+{
+  "resourceId": {
+    "urn": "urn:vam:skill:hub.squrell.cloud/squrell/csod-core-hr"
+  },
+  "version": {
+    "major": 1,
+    "minor": 0,
+    "patch": 1
+  },
+  "description": "Read and update Cornerstone employees, OUs, approvals and jobs; member must be signed into VAM; writes ask first.",
+  "requiresConnector": "urn:vam:connector:hub.squrell.cloud/squrell/cornerstone",
+  "tools": [
+    {
+      "name": "employee_search",
+      "description": "List or filter employees (v2).",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"page\":{\"type\":\"integer\",\"description\":\"Page\"}},\"required\":[],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./employee_search.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/x/users/v2/employees"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "employee_get",
+      "description": "Get one employee by id (v2).",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\",\"description\":\"Employee id\"}},\"required\":[\"id\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./employee_get.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/x/users/v2/employees"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "employee_create",
+      "description": "Create an employee. Asks first.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"body\":{\"type\":\"object\",\"description\":\"Request body\"}},\"required\":[\"body\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./employee_create.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "POST"
+          ],
+          "paths": [
+            "/services/api/x/users/v2/employees"
+          ]
+        }
+      ],
+      "approvalRequired": true
+    },
+    {
+      "name": "employee_update",
+      "description": "Partial-update an employee. Asks first.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\",\"description\":\"Employee id\"},\"body\":{\"type\":\"object\",\"description\":\"Request body\"}},\"required\":[\"id\",\"body\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./employee_update.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "PATCH"
+          ],
+          "paths": [
+            "/services/api/x/users/v2/employees"
+          ]
+        }
+      ],
+      "approvalRequired": true
+    },
+    {
+      "name": "ou_types",
+      "description": "List OU types.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{},\"required\":[],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./ou_types.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/x/organizations/v1/types"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ou_list",
+      "description": "List OUs.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{},\"required\":[],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./ou_list.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/x/organizations/v1/ous"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ou_get",
+      "description": "Get one OU by id.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\",\"description\":\"OU id\"}},\"required\":[\"id\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./ou_get.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/x/organizations/v1/ous"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ou_create",
+      "description": "Create an OU. Asks first.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"body\":{\"type\":\"object\",\"description\":\"Request body\"}},\"required\":[\"body\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./ou_create.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "POST"
+          ],
+          "paths": [
+            "/services/api/x/organizations/v1/ous"
+          ]
+        }
+      ],
+      "approvalRequired": true
+    },
+    {
+      "name": "ou_update",
+      "description": "Replace an OU. Asks first.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\",\"description\":\"OU id\"},\"body\":{\"type\":\"object\",\"description\":\"Request body\"}},\"required\":[\"id\",\"body\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./ou_update.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "PUT"
+          ],
+          "paths": [
+            "/services/api/x/organizations/v1/ous"
+          ]
+        }
+      ],
+      "approvalRequired": true
+    },
+    {
+      "name": "global_search",
+      "description": "Global search for people, training, certifications.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"query\":{\"type\":\"string\",\"description\":\"Search text\"}},\"required\":[],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./global_search.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/Core"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "approvals_list",
+      "description": "List pending approvals for a userName.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"userName\":{\"type\":\"string\",\"description\":\"CSOD userName\"}},\"required\":[\"userName\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./approvals_list.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/Employee"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "approvals_decide",
+      "description": "Approve or deny a pending item. Asks first.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"userName\":{\"type\":\"string\",\"description\":\"CSOD userName\"},\"body\":{\"type\":\"object\",\"description\":\"Request body\"}},\"required\":[\"userName\",\"body\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./approvals_decide.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "POST"
+          ],
+          "paths": [
+            "/services/api/Employee/approvals"
+          ]
+        }
+      ],
+      "approvalRequired": true
+    },
+    {
+      "name": "job_list",
+      "description": "List jobs.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{},\"required\":[],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./job_list.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/x/chr-jobmgmt-app/v1/jobs"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "job_get",
+      "description": "Get one job.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"jobId\":{\"type\":\"string\",\"description\":\"Job id\"}},\"required\":[\"jobId\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./job_get.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/x/chr-jobmgmt-app/v1/jobs"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "job_create",
+      "description": "Create a job. Asks first.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"body\":{\"type\":\"object\",\"description\":\"Request body\"}},\"required\":[\"body\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./job_create.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "POST"
+          ],
+          "paths": [
+            "/services/api/x/chr-jobmgmt-app/v1/jobs"
+          ]
+        }
+      ],
+      "approvalRequired": true
+    },
+    {
+      "name": "job_update",
+      "description": "Update a job. Asks first.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"jobId\":{\"type\":\"string\",\"description\":\"Job id\"},\"body\":{\"type\":\"object\",\"description\":\"Request body\"}},\"required\":[\"jobId\",\"body\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./job_update.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "PATCH"
+          ],
+          "paths": [
+            "/services/api/x/chr-jobmgmt-app/v1/jobs"
+          ]
+        }
+      ],
+      "approvalRequired": true
+    }
+  ]
+}
