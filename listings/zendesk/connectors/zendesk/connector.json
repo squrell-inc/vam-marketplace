@@ -1,0 +1,35 @@
+{
+  "urn": "urn:vam:connector:hub.squrell.cloud/squrell/zendesk",
+  "version": "1.0.0",
+  "displayName": "Zendesk",
+  "publisher": "Zendesk (company REST API)",
+  "description": "Search, read and create tickets in the company's own Zendesk, through its REST API and an OAuth client the org's Zendesk admin created. The org admin enters the Zendesk subdomain and the client id at Enable; there is no client secret.",
+  "icon": "zendesk",
+  "provider": {
+    "kind": "oauth2",
+    "profile": "oauth",
+    "client": "org",
+    "clientSecret": "none",
+    "endpoints": {
+      "authorize": "https://{subdomain}.zendesk.com/oauth/authorizations/new",
+      "token": "https://{subdomain}.zendesk.com/oauth/tokens"
+    },
+    "scopes": ["read", "tickets:write"],
+    "orgConsent": "none"
+  },
+  "tenant": {
+    "name": "subdomain",
+    "suffix": "zendesk.com",
+    "label": "Zendesk subdomain"
+  },
+  "connection": { "holder": "user", "multiAccount": false, "label": "none" },
+  "bindings": [
+    {
+      "name": "api",
+      "placeholder": "vamsec_zendesk_api",
+      "value": "access_token",
+      "inject": "bearer",
+      "hosts": ["{subdomain}.zendesk.com"]
+    }
+  ]
+}

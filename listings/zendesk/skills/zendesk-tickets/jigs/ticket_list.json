@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "catalog": "vam/1",
+  "root": "root",
+  "state": {},
+  "nodes": {
+    "root": {
+      "type": "List",
+      "props": { "items": { "$data": "/tickets" }, "empty": "No tickets" },
+      "children": ["row"]
+    },
+    "row": {
+      "type": "Stack",
+      "props": { "direction": "horizontal", "gap": "small" },
+      "children": ["f0", "f1", "f2"]
+    },
+    "f0": { "type": "Text", "props": { "text": { "$item": "/id" } } },
+    "f1": { "type": "Text", "props": { "text": { "$item": "/status" } } },
+    "f2": { "type": "Text", "props": { "text": { "$item": "/subject" } } }
+  }
+}

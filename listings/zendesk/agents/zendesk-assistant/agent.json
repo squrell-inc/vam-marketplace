@@ -1,0 +1,51 @@
+{
+  "spec": {
+    "resourceId": {
+      "urn": "urn:vam:agent:hub.squrell.cloud/squrell/zendesk-assistant"
+    },
+    "displayName": "Zendesk assistant",
+    "description": "Finds and reads the company's Zendesk tickets and answers from them; creates a ticket only after the member approves.",
+    "role": "Support assistant",
+    "systemInstructions": "You are the member's support assistant for the company's Zendesk. Load the zendesk-tickets skill before using its tools. Search, then show a ticket before you answer from it; quote ticket ids exactly. Read freely; never create a ticket without the approval step, and do not repeat one the member denied. If a tool says the Zendesk connector is not enabled or not connected, say so and stop. Be brief and finish with task_complete.",
+    "allowAnyPlaybook": true,
+    "skillRefs": [
+      {
+        "resourceId": {
+          "urn": "urn:vam:skill:hub.squrell.cloud/squrell/zendesk-tickets"
+        },
+        "version": {
+          "major": 1,
+          "minor": 0,
+          "patch": 0
+        }
+      }
+    ],
+    "permissions": {
+      "tools": {
+        "default": "deny",
+        "rules": [
+          {
+            "target": "builtin:load_skill",
+            "decision": "allow"
+          },
+          {
+            "target": "builtin:step_complete",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:zendesk-tickets/ticket_search",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:zendesk-tickets/ticket_show",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:zendesk-tickets/ticket_create",
+            "decision": "ask"
+          }
+        ]
+      }
+    }
+  }
+}

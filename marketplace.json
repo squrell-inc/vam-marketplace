@@ -139,6 +139,28 @@
       ],
       "ref": "cornerstone-v0.1.0",
       "requiresNode": ">=0.1.0"
+    },
+    {
+      "id": "zendesk",
+      "displayName": "Zendesk",
+      "description": "Search and read the company's Zendesk tickets and create one, through the member's own Zendesk connection and an OAuth client the org's Zendesk admin created. Tickets are created only after the member approves.",
+      "connector": "urn:vam:connector:hub.squrell.cloud/squrell/zendesk",
+      "artifacts": [
+        {
+          "kind": "connector",
+          "path": "listings/zendesk/connectors/zendesk"
+        },
+        {
+          "kind": "skill",
+          "path": "listings/zendesk/skills/zendesk-tickets"
+        },
+        {
+          "kind": "agent",
+          "path": "listings/zendesk/agents/zendesk-assistant"
+        }
+      ],
+      "ref": "zendesk-v1.0.0-rc.1",
+      "requiresNode": ">=0.3.0"
     }
   ]
 }

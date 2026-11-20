@@ -24,7 +24,7 @@ env:
   # The vam ref (commit, tag or branch) whose `vam catalog validate` is the reference check.
   # Pin it to a release commit or tag in a pull request.
   VAM_REPO: squrell-inc/VAM
-  VAM_COMMIT: main
+  VAM_COMMIT: c09c9d74e056c0134e0d50b2cfc15236dd43b595
   BUN_VERSION: "1.4.4"
   # The one finding the Microsoft 365 listing is allowed to have: Graph's findMeetingTimes is a POST
   # that only computes suggestions, so the tool is READ_ONLY and declares a POST.
