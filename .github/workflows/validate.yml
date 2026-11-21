@@ -131,7 +131,10 @@ jobs:
             fi
             .github/scripts/gated-root.sh "$dir" "$dir-gated"
             out="$("$HOME/vam-cli/vam" catalog validate "$dir-gated" --json || true)"
-            if ! echo "$out" | jq -e --arg ok "$ACCEPTED_FINDING" '.ok == true and ([.findings[] | select(.message != $ok)] | length) == 0' >/dev/null; then
+            # At a tag, a listing tagged before the Phase 7 node may lack tests/connector-test.json:
+            # a tag cannot change, so that one warning is accepted here. The repository step above
+            # still fails on it for the current tree. Every other finding fails, as there.
+            if ! echo "$out" | jq -e --arg ok "$ACCEPTED_FINDING" '.ok == true and ([.findings[] | select(.message != $ok and (.message | endswith("`vam connector test` has nothing to run") | not))] | length) == 0' >/dev/null; then
               echo "::error::$ref does not validate"; echo "$out" | jq -r '.findings[] | "\(.level) \(.path): \(.message)"'; fail=1
             else
               echo "$ref validates"

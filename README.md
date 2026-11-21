@@ -98,7 +98,9 @@ when a new node release changes the rules.
   only a connector the listing ships; its tools are covered by the Bun tests;
 - for each listing, checks that its `ref` tag exists, that the index at the tag names that tag, and
   that the repository at the tag validates (a `ref` whose tag is not created yet is noted, not an error,
-  on a branch or pull request; on a tag push it is an error);
+  on a branch or pull request; on a tag push it is an error). A tag made before the Phase 7 node may
+  lack `tests/connector-test.json`; that one warning is accepted at a tag, because a tag cannot change.
+  The current tree still has to pass it;
 - runs the Bun tests for the skills (`bun test tests`).
 
 **Excluded from the gate: cornerstone.** `EXCLUDED_LISTINGS` in the workflow leaves it out, and every run
