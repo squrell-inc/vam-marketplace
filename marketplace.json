@@ -21,7 +21,7 @@
           "path": "listings/microsoft-365/agents/executive-assistant"
         }
       ],
-      "ref": "microsoft-365-v1.0.0",
+      "ref": "microsoft-365-v1.0.1",
       "requiresNode": ">=0.1.0"
     },
     {

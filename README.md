@@ -85,13 +85,28 @@ private pre-release import on a side branch (see Contributing).
 the workflow does not start a tag-push run. It builds `vam-cli` at a pinned ref of the public VAM
 repository, then:
 
-- runs `vam catalog validate . --strict` on the repository. The one accepted warning is
-  `calendar_find_slots` being READ_ONLY while it POSTs (Graph's `findMeetingTimes` is a POST that only
-  suggests times); any other finding fails the run;
+The pinned ref is the VAM connectors Phase 7 release (`5f1de31`, VAM #139). Move it in a pull request
+when a new node release changes the rules.
+
+- runs `vam catalog validate --strict` and `vam connector validate --strict` (the listing rules the node
+  applies at install: bindings, hosts, the connector file) on the repository. The one accepted warning
+  is `calendar_find_slots` being READ_ONLY while it POSTs (Graph's `findMeetingTimes` is a POST that
+  only suggests times); any other finding fails the run;
+- runs `vam connector test` on each listing's `tests/connector-test.json`, offline, behind the node's
+  egress screen. A remote MCP listing (notion, wetrack, welead) is checked and has nothing to run.
+  microsoft-365 has no test file: its connector is built into the node, and `vam connector test` checks
+  only a connector the listing ships; its tools are covered by the Bun tests;
 - for each listing, checks that its `ref` tag exists, that the index at the tag names that tag, and
   that the repository at the tag validates (a `ref` whose tag is not created yet is noted, not an error,
-  on a branch or pull request; on a tag push it is an error);
+  on a branch or pull request; on a tag push it is an error). A tag made before the Phase 7 node may
+  lack `tests/connector-test.json`; that one warning is accepted at a tag, because a tag cannot change.
+  The current tree still has to pass it;
 - runs the Bun tests for the skills (`bun test tests`).
+
+**Excluded from the gate: cornerstone.** `EXCLUDED_LISTINGS` in the workflow leaves it out, and every run
+prints that. Under the Phase 7 node its skills' egress names the binding `csod`, which its MCP discover
+connector does not provide, so the node refuses to import `cornerstone-v0.1.0`. The exclusion is for
+cornerstone only and is removed when its listing is fixed and passes.
 
 The workflow needs no secrets, so it also runs on pull requests from forks.
 
