@@ -72,9 +72,28 @@ describe("mail_search", () => {
     expect(p.searchParams.has("$search")).toBe(false);
   });
 
+  test("a calendar day is a since/until window, newest first", async () => {
+    const { searchPath } = await mod("mail_search.ts");
+    const p = new URL("https://x" + searchPath({ since: "2026-11-19T00:00:00-05:00", until: "2026-11-20T00:00:00-05:00" }));
+    expect(p.searchParams.get("$filter")).toBe(
+      "receivedDateTime ge 2026-11-19T05:00:00.000Z and receivedDateTime lt 2026-11-20T05:00:00.000Z",
+    );
+    expect(p.searchParams.get("$orderby")).toBe("receivedDateTime desc");
+    expect(p.searchParams.get("$top")).toBe("10");
+  });
+
+  test("a window needs a zone, an order, and no query", async () => {
+    const { searchPath } = await mod("mail_search.ts");
+    expect(() => searchPath({ since: "2026-11-19T00:00:00" })).toThrow("'since'");
+    expect(() => searchPath({ since: "2026-11-20T00:00:00Z", until: "2026-11-19T00:00:00Z" })).toThrow("'until'");
+    expect(() => searchPath({ query: "plan", since: "2026-11-19T00:00:00Z" })).toThrow("'query'");
+    expect(() => searchPath({ since: "2026-11-19T00:00:00Z", sinceHours: 24 })).toThrow("not both");
+  });
+
   test("rejects a bad size", async () => {
     const { mailSearch } = await mod("mail_search.ts");
     await expect(mailSearch({ top: 500 })).rejects.toThrow("'top'");
+    await expect(mailSearch({ top: 26 })).rejects.toThrow("'top'");
   });
 });
 
