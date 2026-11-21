@@ -1,0 +1,78 @@
+{
+  "hosts": [
+    "demo.zendesk.com"
+  ],
+  "routes": [
+    {
+      "method": "GET",
+      "prefix": "/api/v2/search.json",
+      "status": 200,
+      "body": {
+        "results": [
+          {
+            "id": 101,
+            "subject": "Printer offline on floor 3",
+            "status": "open",
+            "priority": "high",
+            "updated_at": "2026-11-20T09:00:00Z"
+          }
+        ],
+        "count": 1
+      }
+    },
+    {
+      "method": "GET",
+      "prefix": "/api/v2/tickets/101.json",
+      "status": 200,
+      "body": {
+        "ticket": {
+          "id": 101,
+          "subject": "Printer offline on floor 3",
+          "status": "open",
+          "priority": "high",
+          "updated_at": "2026-11-20T09:00:00Z",
+          "description": "The floor 3 printer shows offline since this morning."
+        }
+      }
+    },
+    {
+      "method": "POST",
+      "prefix": "/api/v2/tickets.json",
+      "status": 201,
+      "body": {
+        "ticket": {
+          "id": 202,
+          "subject": "VPN drops every hour",
+          "status": "new"
+        }
+      }
+    }
+  ],
+  "cases": [
+    {
+      "tool": "ticket_search",
+      "input": {
+        "query": "printer"
+      },
+      "expect": "ok",
+      "contains": "Printer offline on floor 3"
+    },
+    {
+      "tool": "ticket_show",
+      "input": {
+        "id": 101
+      },
+      "expect": "ok",
+      "contains": "shows offline since this morning"
+    },
+    {
+      "tool": "ticket_create",
+      "input": {
+        "subject": "VPN drops every hour",
+        "body": "Since Monday the VPN disconnects hourly."
+      },
+      "expect": "ok",
+      "contains": "VPN drops every hour"
+    }
+  ]
+}
