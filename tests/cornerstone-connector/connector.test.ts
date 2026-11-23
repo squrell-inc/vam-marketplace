@@ -19,7 +19,7 @@ describe("cornerstone marketplace connector (HTTP / REST)", () => {
 
   test("oauth + org client (REST marketplace shape, not MCP discover)", () => {
     expect(conn.urn).toBe("urn:vam:connector:hub.squrell.cloud/squrell/cornerstone");
-    expect(conn.version).toBe("0.1.2");
+    expect(conn.version).toBe("1.0.2");
     expect(conn.provider.kind).toBe("oauth2");
     expect(conn.provider.profile).toBe("oauth");
     expect(conn.provider.client).toBe("org");
