@@ -137,7 +137,7 @@
           "path": "listings/cornerstone/agents/cornerstone-assistant"
         }
       ],
-      "ref": "cornerstone-v1.0.2",
+      "ref": "cornerstone-v1.0.3",
       "requiresNode": ">=0.1.0"
     },
     {

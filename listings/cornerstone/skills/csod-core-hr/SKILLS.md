@@ -1,7 +1,7 @@
 ---
 id: "urn:vam:skill:hub.squrell.cloud/squrell/csod-core-hr"
 name: "csod-core-hr"
-version: "1.0.2"
+version: "1.0.3"
 description: "Read and update Cornerstone employees, OUs, approvals and jobs; member must be signed into VAM; writes ask first"
 ---
 
