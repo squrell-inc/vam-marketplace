@@ -1,0 +1,44 @@
+{
+  "urn": "urn:vam:connector:hub.squrell.cloud/squrell/monday",
+  "version": "1.0.0",
+  "displayName": "monday.com",
+  "publisher": "monday.com (hosted MCP server)",
+  "description": "Read and update workspaces, boards, items, columns and updates through the member's own monday.com connection. Reads run freely; writes wait for member approval.",
+  "icon": "monday",
+  "provider": {
+    "kind": "oauth2",
+    "profile": "discover",
+    "clientSecret": "none",
+    "scopes": [],
+    "orgConsent": "none"
+  },
+  "connection": {
+    "holder": "user",
+    "multiAccount": false,
+    "label": "monday.com account"
+  },
+  "mcp": {
+    "url": "https://mcp.monday.com/mcp",
+    "tools": [
+      { "remote": "list_workspaces", "sideEffect": "READ_ONLY" },
+      { "remote": "workspace_info", "sideEffect": "READ_ONLY" },
+      { "remote": "get_board_info", "sideEffect": "READ_ONLY" },
+      { "remote": "get_board_items_page", "sideEffect": "READ_ONLY" },
+      { "remote": "board_insights", "sideEffect": "READ_ONLY" },
+      { "remote": "get_board_activity", "sideEffect": "READ_ONLY" },
+      { "remote": "get_updates", "sideEffect": "READ_ONLY" },
+      { "remote": "get_column_type_info", "sideEffect": "READ_ONLY" },
+      { "remote": "list_users_and_teams", "sideEffect": "READ_ONLY" },
+      { "remote": "get_user_context", "sideEffect": "READ_ONLY" },
+      { "remote": "create_item", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "change_item_column_values", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "create_update", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "create_board", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "create_column", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "create_group", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "create_workspace", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "update_workspace", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" },
+      { "remote": "create_notification", "sideEffect": "MUTABLE_EXTERNAL", "default": "ask" }
+    ]
+  }
+}

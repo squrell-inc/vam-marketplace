@@ -139,6 +139,32 @@
       ],
       "ref": "cornerstone-v0.1.0",
       "requiresNode": ">=0.1.0"
+    },
+    {
+      "id": "monday",
+      "displayName": "monday.com",
+      "description": "Read and update workspaces, boards, items, columns and updates through the member's own monday.com connection. Changes are made only after the member approves.",
+      "connector": "urn:vam:connector:hub.squrell.cloud/squrell/monday",
+      "artifacts": [
+        {
+          "kind": "connector",
+          "path": "listings/monday/connectors/monday"
+        },
+        {
+          "kind": "skill",
+          "path": "listings/monday/skills/monday-workspace"
+        },
+        {
+          "kind": "playbook",
+          "path": "listings/monday/playbooks/create-task"
+        },
+        {
+          "kind": "agent",
+          "path": "listings/monday/agents/monday-assistant"
+        }
+      ],
+      "ref": "monday-v1.0.0",
+      "requiresNode": ">=0.1.0"
     }
   ]
 }

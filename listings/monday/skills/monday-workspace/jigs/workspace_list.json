@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "catalog": "vam/1",
+  "root": "root",
+  "state": {},
+  "nodes": {
+    "root": {
+      "type": "List",
+      "props": { "items": { "$data": "/workspaces" }, "empty": "No workspaces found" },
+      "children": ["row"]
+    },
+    "row": {
+      "type": "Stack",
+      "props": { "direction": "horizontal", "gap": "small" },
+      "children": ["c0", "c1"]
+    },
+    "c0": { "type": "Text", "props": { "text": { "$item": "/name" } } },
+    "c1": { "type": "Text", "props": { "text": { "$item": "/kind" } } }
+  }
+}
