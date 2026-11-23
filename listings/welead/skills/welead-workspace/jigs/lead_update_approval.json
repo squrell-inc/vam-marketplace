@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "catalog": "vam/1",
+  "root": "root",
+  "state": {
+    "lead_id": "",
+    "status": "",
+    "notes": ""
+  },
+  "nodes": {
+    "root": {
+      "type": "Stack",
+      "props": { "gap": "medium" },
+      "children": ["title", "in_lead_id", "in_status", "in_notes", "actions"]
+    },
+    "title": {
+      "type": "Text",
+      "props": { "text": "Update Lead Status & Stage", "emphasis": "strong" }
+    },
+    "in_lead_id": {
+      "type": "Input",
+      "props": { "label": "Lead ID", "value": { "$state": "lead_id" } }
+    },
+    "in_status": {
+      "type": "Select",
+      "props": {
+        "label": "New Pipeline Status",
+        "value": { "$state": "status" },
+        "options": [
+          "New",
+          "Contacted",
+          "Qualified",
+          "Proposal Sent",
+          "Negotiation",
+          "Won",
+          "Lost"
+        ]
+      }
+    },
+    "in_notes": {
+      "type": "TextArea",
+      "props": { "label": "Stage Progression Notes", "value": { "$state": "notes" }, "placeholder": "Reason for stage transition..." }
+    },
+    "actions": {
+      "type": "Stack",
+      "props": { "direction": "horizontal", "gap": "small" },
+      "children": ["btn_approve", "btn_deny"]
+    },
+    "btn_approve": {
+      "type": "Button",
+      "props": {
+        "label": "Approve Update",
+        "tone": "success",
+        "action": {
+          "event": "submit",
+          "with": ["lead_id", "status", "notes"],
+          "set": { "decision": "approve" }
+        }
+      }
+    },
+    "btn_deny": {
+      "type": "Button",
+      "props": {
+        "label": "Cancel",
+        "tone": "danger",
+        "action": {
+          "event": "submit",
+          "with": [],
+          "set": { "decision": "deny" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "catalog": "vam/1",
+  "root": "root",
+  "state": {
+    "customer_name": "",
+    "project_name": "",
+    "value_lakhs": 0,
+    "offerings": ""
+  },
+  "nodes": {
+    "root": {
+      "type": "Stack",
+      "props": { "gap": "medium" },
+      "children": ["title", "in_customer", "in_project", "in_value", "in_offerings", "actions"]
+    },
+    "title": {
+      "type": "Text",
+      "props": { "text": "Create New WeLead Opportunity", "emphasis": "strong" }
+    },
+    "in_customer": {
+      "type": "Input",
+      "props": { "label": "Customer / Organization", "value": { "$state": "customer_name" }, "placeholder": "e.g. Acme Corp" }
+    },
+    "in_project": {
+      "type": "Input",
+      "props": { "label": "Project Name", "value": { "$state": "project_name" }, "placeholder": "e.g. Cloud ERP Modernization" }
+    },
+    "in_value": {
+      "type": "NumberInput",
+      "props": { "label": "Expected Deal Value (₹ Lakhs)", "value": { "$state": "value_lakhs" }, "min": 0 }
+    },
+    "in_offerings": {
+      "type": "Input",
+      "props": { "label": "Primary Offering", "value": { "$state": "offerings" }, "placeholder": "e.g. Consulting & Implementation" }
+    },
+    "actions": {
+      "type": "Stack",
+      "props": { "direction": "horizontal", "gap": "small" },
+      "children": ["btn_approve", "btn_deny"]
+    },
+    "btn_approve": {
+      "type": "Button",
+      "props": {
+        "label": "Approve & Create Lead",
+        "tone": "success",
+        "action": {
+          "event": "submit",
+          "with": ["customer_name", "project_name", "value_lakhs", "offerings"],
+          "set": { "decision": "approve" }
+        }
+      }
+    },
+    "btn_deny": {
+      "type": "Button",
+      "props": {
+        "label": "Cancel",
+        "tone": "danger",
+        "action": {
+          "event": "submit",
+          "with": [],
+          "set": { "decision": "deny" }
+        }
+      }
+    }
+  }
+}
