@@ -105,7 +105,7 @@ when a new node release changes the rules.
 
 **Excluded from the gate: cornerstone.** `EXCLUDED_LISTINGS` in the workflow leaves it out, and every run
 prints that. Under the Phase 7 node its skills' egress names the binding `csod`, which its MCP discover
-connector does not provide, so the node refuses to import `cornerstone-v0.1.0`. The exclusion is for
+connector does not provide, so the node refuses to import its releases (`cornerstone-v0.1.0` on). The exclusion is for
 cornerstone only and is removed when its listing is fixed and passes.
 
 The workflow needs no secrets, so it also runs on pull requests from forks.
