@@ -23,7 +23,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -46,7 +46,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -69,12 +69,12 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "POST"
           ],
-          "paths": [
-            "/services/api/Goals/Create"
+          "pathPrefixes": [
+            "/services/api/Goals"
           ]
         }
       ],
@@ -93,12 +93,12 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "PUT"
           ],
-          "paths": [
-            "/services/api/Goals/Update"
+          "pathPrefixes": [
+            "/services/api/Goals"
           ]
         }
       ],
@@ -117,12 +117,12 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "PUT"
           ],
-          "paths": [
-            "/services/api/Goals/UpdateProgress"
+          "pathPrefixes": [
+            "/services/api/Goals"
           ]
         }
       ],

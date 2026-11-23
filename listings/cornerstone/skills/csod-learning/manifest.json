@@ -23,7 +23,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -46,7 +46,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -69,12 +69,12 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "POST"
           ],
-          "paths": [
-            "/services/api/LO/Create"
+          "pathPrefixes": [
+            "/services/api/LO"
           ]
         }
       ],
@@ -93,12 +93,12 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "POST"
           ],
-          "paths": [
-            "/services/api/LO/Update"
+          "pathPrefixes": [
+            "/services/api/LO"
           ]
         }
       ],
@@ -117,7 +117,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -140,7 +140,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -163,7 +163,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -186,12 +186,12 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "POST"
           ],
-          "paths": [
-            "/services/api/v1/transcripts/assign"
+          "pathPrefixes": [
+            "/services/api/v1/transcripts"
           ]
         }
       ],
@@ -210,12 +210,12 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "POST"
           ],
-          "paths": [
-            "/services/api/v1/transcripts/request"
+          "pathPrefixes": [
+            "/services/api/v1/transcripts"
           ]
         }
       ],
@@ -234,7 +234,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -257,7 +257,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -280,7 +280,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -303,7 +303,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -326,7 +326,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -349,7 +349,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -372,7 +372,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -395,7 +395,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -418,7 +418,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -441,12 +441,12 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "POST"
           ],
-          "paths": [
-            "/services/x/lms-learning-assignment/v1/learning-assignment/standard"
+          "pathPrefixes": [
+            "/services/x/lms-learning-assignment"
           ]
         }
       ],
@@ -465,7 +465,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -488,11 +488,11 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "POST"
           ],
-          "paths": [
+          "pathPrefixes": [
             "/services/api/SessionRoster"
           ]
         }
@@ -512,7 +512,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -535,7 +535,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -558,12 +558,12 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "POST"
           ],
-          "paths": [
-            "/services/api/Certification/Remove"
+          "pathPrefixes": [
+            "/services/api/Certification"
           ]
         }
       ],
@@ -582,12 +582,12 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "POST"
           ],
-          "paths": [
-            "/services/x/lms-express-class/v1/ExpressClass"
+          "pathPrefixes": [
+            "/services/x/lms-express-class"
           ]
         }
       ],

@@ -23,7 +23,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -46,7 +46,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -69,7 +69,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -92,7 +92,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -115,7 +115,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -138,7 +138,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -161,7 +161,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -185,7 +185,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],

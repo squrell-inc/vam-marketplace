@@ -9,7 +9,7 @@ description: "Read performance reviews and manage goals in Cornerstone; member m
 
 Work with Cornerstone Performance through the **org** Cornerstone connection.
 
-**Auth:** Member must be signed into VAM (Log In or SSO). Tools use the org Cornerstone token; never Cornerstone passwords.
+**Auth:** Member must be signed into VAM (Log In or SSO). Tools use the org Cornerstone token; never Cornerstone passwords. Portal host comes from Enable (`.vam/connector.json` → `hosts.csod`), never hardcoded.
 
 ## When to use each tool
 
