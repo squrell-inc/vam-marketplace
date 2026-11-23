@@ -21,7 +21,7 @@
           "path": "listings/microsoft-365/agents/executive-assistant"
         }
       ],
-      "ref": "microsoft-365-v1.0.1",
+      "ref": "microsoft-365-v1.0.2",
       "requiresNode": ">=0.1.0"
     },
     {
@@ -47,7 +47,7 @@
           "path": "listings/notion/agents/notion-assistant"
         }
       ],
-      "ref": "notion-v1.0.0",
+      "ref": "notion-v1.0.1",
       "requiresNode": ">=0.1.0"
     },
     {
@@ -73,7 +73,7 @@
           "path": "listings/wetrack/agents/wetrack-assistant"
         }
       ],
-      "ref": "wetrack-v1.0.0",
+      "ref": "wetrack-v1.0.1",
       "requiresNode": ">=0.1.0"
     },
     {
@@ -99,7 +99,7 @@
           "path": "listings/welead/agents/welead-assistant"
         }
       ],
-      "ref": "welead-v1.0.0",
+      "ref": "welead-v1.0.1",
       "requiresNode": ">=0.1.0"
     },
     {
@@ -137,7 +137,7 @@
           "path": "listings/cornerstone/agents/cornerstone-assistant"
         }
       ],
-      "ref": "cornerstone-v0.1.0",
+      "ref": "cornerstone-v0.1.1",
       "requiresNode": ">=0.1.0"
     },
     {
