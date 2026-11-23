@@ -1,7 +1,7 @@
 ---
 id: "urn:vam:skill:hub.squrell.cloud/squrell/m365-mail"
 name: "m365-mail"
-version: "1.0.0"
+version: "1.0.1"
 description: "Read the member's Microsoft 365 mail and calendar; draft, send and book only with their approval"
 ---
 
@@ -13,8 +13,12 @@ Every call is made as the member with their access token; you never see or handl
 ## When to use each tool
 
 - **mail_search** finds mail. Give `query` to search (sender, subject and body words), or leave it
-  out to list the newest mail from the last `sinceHours` (default 24). It returns an id, sender,
-  subject, time and a short preview for each message. The result shows as a mail card.
+  out to list mail newest first. For a day ("yesterday", "on Monday") give `since` and `until` as
+  that day's start and the next day's start in the member's time zone, with the zone
+  (`2026-11-19T00:00:00-05:00`); otherwise `sinceHours` (default 24). `query` cannot be combined
+  with a time window. `top` is at most 25 (default 10); ask for more pages only if the member
+  wants them. It returns an id, sender, subject, time and a short preview for each message. The
+  result shows as a mail card.
 - **mail_read** reads one whole message by the `id` mail_search returned. Read before you reply.
 - **calendar_list** shows events between `start` and `end` (default: the next seven days).
 - **calendar_find_slots** suggests free times for the member and optional `attendees` (email

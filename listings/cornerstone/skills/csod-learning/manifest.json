@@ -1,0 +1,597 @@
+{
+  "resourceId": {
+    "urn": "urn:vam:skill:hub.squrell.cloud/squrell/csod-learning"
+  },
+  "version": {
+    "major": 1,
+    "minor": 0,
+    "patch": 1
+  },
+  "description": "Search catalog and transcripts, manage assignments and learning objects in Cornerstone Learning; member must be signed into VAM; writes ask first.",
+  "requiresConnector": "urn:vam:connector:hub.squrell.cloud/squrell/cornerstone",
+  "tools": [
+    {
+      "name": "catalog_search",
+      "description": "Search the Cornerstone learning catalog by text.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"query\":{\"type\":\"string\",\"description\":\"Search text\"},\"page\":{\"type\":\"integer\",\"description\":\"Page\"},\"pageSize\":{\"type\":\"integer\",\"description\":\"Page size\"}},\"required\":[],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./catalog_search.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/Catalog"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "lo_get_details",
+      "description": "Get details for one learning object by objectId.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"objectId\":{\"type\":\"string\",\"description\":\"LO object id\"}},\"required\":[\"objectId\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./lo_get_details.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/LO"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "lo_create",
+      "description": "Create a learning object. Asks the member first.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"title\":{\"type\":\"string\",\"description\":\"Title\"},\"trainingType\":{\"type\":\"string\",\"description\":\"Type\"},\"body\":{\"type\":\"object\",\"description\":\"Request body\"}},\"required\":[\"title\",\"trainingType\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./lo_create.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "POST"
+          ],
+          "paths": [
+            "/services/api/LO/Create"
+          ]
+        }
+      ],
+      "approvalRequired": true
+    },
+    {
+      "name": "lo_update",
+      "description": "Update a learning object. Asks the member first.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"objectId\":{\"type\":\"string\",\"description\":\"LO id\"},\"body\":{\"type\":\"object\",\"description\":\"Request body\"}},\"required\":[\"objectId\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./lo_update.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "POST"
+          ],
+          "paths": [
+            "/services/api/LO/Update"
+          ]
+        }
+      ],
+      "approvalRequired": true
+    },
+    {
+      "name": "transcript_search",
+      "description": "Search transcript records.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"userId\":{\"type\":\"string\",\"description\":\"User id\"},\"page\":{\"type\":\"integer\",\"description\":\"Page\"}},\"required\":[],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./transcript_search.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/LOTranscript"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "transcript_overview",
+      "description": "Transcript overview for a user.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"userId\":{\"type\":\"string\",\"description\":\"User id\"}},\"required\":[],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./transcript_overview.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/v1/transcripts"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "transcript_details",
+      "description": "Transcript details.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"userId\":{\"type\":\"string\",\"description\":\"User id\"},\"transcriptId\":{\"type\":\"string\",\"description\":\"Transcript id\"}},\"required\":[],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./transcript_details.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/v1/transcripts"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "transcript_assign",
+      "description": "Assign training to transcripts. Asks first.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"body\":{\"type\":\"object\",\"description\":\"Request body\"}},\"required\":[\"body\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./transcript_assign.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "POST"
+          ],
+          "paths": [
+            "/services/api/v1/transcripts/assign"
+          ]
+        }
+      ],
+      "approvalRequired": true
+    },
+    {
+      "name": "transcript_request",
+      "description": "Request training on a transcript. Asks first.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"body\":{\"type\":\"object\",\"description\":\"Request body\"}},\"required\":[\"body\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./transcript_request.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "POST"
+          ],
+          "paths": [
+            "/services/api/v1/transcripts/request"
+          ]
+        }
+      ],
+      "approvalRequired": true
+    },
+    {
+      "name": "user_inbox",
+      "description": "User inbox items.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"userId\":{\"type\":\"string\",\"description\":\"User id\"}},\"required\":[],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./user_inbox.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/TranscriptAndTask"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "user_assigned",
+      "description": "Trainings assigned to a user.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"userId\":{\"type\":\"string\",\"description\":\"User id\"}},\"required\":[],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./user_assigned.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/TranscriptAndTask"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "user_sessions",
+      "description": "Upcoming sessions for a user.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"userId\":{\"type\":\"string\",\"description\":\"User id\"}},\"required\":[],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./user_sessions.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/TranscriptAndTask"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "user_transcript",
+      "description": "Transcript records for a user.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"userId\":{\"type\":\"string\",\"description\":\"User id\"}},\"required\":[],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./user_transcript.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/TranscriptAndTask"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "suggested_training",
+      "description": "Suggested training for a user.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"userId\":{\"type\":\"string\",\"description\":\"User id\"}},\"required\":[],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./suggested_training.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/TranscriptAndTask"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "pending_approvals",
+      "description": "Pending learning approvals.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"userId\":{\"type\":\"string\",\"description\":\"User id\"}},\"required\":[],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./pending_approvals.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/TranscriptAndTask"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "user_tasks",
+      "description": "Incomplete tasks for a user.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"userId\":{\"type\":\"string\",\"description\":\"User id\"}},\"required\":[],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./user_tasks.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/TranscriptAndTask"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "assignment_search",
+      "description": "Search learning assignments.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\",\"description\":\"Name filter\"}},\"required\":[],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./assignment_search.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/x/lms-learning-assignment"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "assignment_get",
+      "description": "Get one learning assignment by id.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\",\"description\":\"Assignment id\"}},\"required\":[\"id\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./assignment_get.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/x/lms-learning-assignment"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "assignment_create",
+      "description": "Create a standard learning assignment. Asks first.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\",\"description\":\"Assignment name\"},\"body\":{\"type\":\"object\",\"description\":\"Request body\"}},\"required\":[\"name\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./assignment_create.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "POST"
+          ],
+          "paths": [
+            "/services/x/lms-learning-assignment/v1/learning-assignment/standard"
+          ]
+        }
+      ],
+      "approvalRequired": true
+    },
+    {
+      "name": "roster_get",
+      "description": "Get an ILT session roster.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"sessionId\":{\"type\":\"string\",\"description\":\"Session id\"}},\"required\":[\"sessionId\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./roster_get.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/SessionRoster"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "roster_update",
+      "description": "Update a session roster. Asks first.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"body\":{\"type\":\"object\",\"description\":\"Request body\"}},\"required\":[\"body\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./roster_update.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "POST"
+          ],
+          "paths": [
+            "/services/api/SessionRoster"
+          ]
+        }
+      ],
+      "approvalRequired": true
+    },
+    {
+      "name": "cert_get",
+      "description": "Get certification details.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"certificationId\":{\"type\":\"string\",\"description\":\"Certification id\"}},\"required\":[\"certificationId\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./cert_get.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/CertificationDetails"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cert_transcript",
+      "description": "Certification transcript details.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"userId\":{\"type\":\"string\",\"description\":\"User id\"}},\"required\":[],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./cert_transcript.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/CertificationTranscript"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cert_remove",
+      "description": "Remove certifications from users. Asks first.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"body\":{\"type\":\"object\",\"description\":\"Request body\"}},\"required\":[\"body\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./cert_remove.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "POST"
+          ],
+          "paths": [
+            "/services/api/Certification/Remove"
+          ]
+        }
+      ],
+      "approvalRequired": true
+    },
+    {
+      "name": "express_class_create",
+      "description": "Create an Express Class. Asks first.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"body\":{\"type\":\"object\",\"description\":\"Request body\"}},\"required\":[\"body\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./express_class_create.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "POST"
+          ],
+          "paths": [
+            "/services/x/lms-express-class/v1/ExpressClass"
+          ]
+        }
+      ],
+      "approvalRequired": true
+    }
+  ]
+}
