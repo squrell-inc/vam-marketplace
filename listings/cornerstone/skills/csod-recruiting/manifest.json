@@ -1,0 +1,200 @@
+{
+  "resourceId": {
+    "urn": "urn:vam:skill:hub.squrell.cloud/squrell/csod-recruiting"
+  },
+  "version": {
+    "major": 1,
+    "minor": 0,
+    "patch": 1
+  },
+  "description": "Read requisitions and applicants and update applicant status in Cornerstone Recruiting; member must be signed into VAM; writes ask first.",
+  "requiresConnector": "urn:vam:connector:hub.squrell.cloud/squrell/cornerstone",
+  "tools": [
+    {
+      "name": "requisition_get",
+      "description": "Get job requisition details.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{},\"required\":[],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./requisition_get.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/Recruiting/JobRequisitionDetails"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "requisition_ad",
+      "description": "Get job requisition ad details.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{},\"required\":[],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./requisition_ad.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/Recruiting/JobRequisitionDetails"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "requisition_custom_fields",
+      "description": "Get requisition custom fields.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{},\"required\":[],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./requisition_custom_fields.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/Recruiting/JobRequisitionDetails"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "application_workflow_get",
+      "description": "Get application workflow for a requisition externalId.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"externalId\":{\"type\":\"string\",\"description\":\"Requisition external id\"}},\"required\":[\"externalId\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./application_workflow_get.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/x/rec-job-requisition"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "applicant_search",
+      "description": "Search job applicants by status and filters.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"CurrentStatus\":{\"type\":\"string\",\"description\":\"Required applicant status\"}},\"required\":[\"CurrentStatus\"],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./applicant_search.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/Recruiting/JobApplicant"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "applicant_custom_fields",
+      "description": "Get applicant custom fields.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"RequisitionId\":{\"type\":\"string\",\"description\":\"Requisition id\"}},\"required\":[],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./applicant_custom_fields.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/Recruiting/JobApplicant"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "applicant_update_status",
+      "description": "Update applicant status. Asks first.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{},\"required\":[],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./applicant_update_status.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/Recruiting/JobApplicantUpdateStatus"
+          ]
+        }
+      ],
+      "approvalRequired": true
+    },
+    {
+      "name": "job_application_submit",
+      "description": "Submit an external job application. Asks first.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{},\"required\":[],\"additionalProperties\":true}",
+      "outputSchemaJson": "{\"type\":\"object\"}",
+      "sideEffect": "SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./job_application_submit.ts"
+      },
+      "egress": [
+        {
+          "binding": "csod",
+          "host": "example.csod.com",
+          "methods": [
+            "GET"
+          ],
+          "pathPrefixes": [
+            "/services/api/x/external-application"
+          ]
+        }
+      ],
+      "approvalRequired": true
+    }
+  ]
+}

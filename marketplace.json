@@ -103,6 +103,44 @@
       "requiresNode": ">=0.1.0"
     },
     {
+      "id": "cornerstone",
+      "displayName": "Cornerstone OnDemand",
+      "description": "Work with Cornerstone Learning, Core/HR, Performance and Recruiting through the member's Cornerstone connection. Reads run freely. Writes wait for the member's approval.",
+      "connector": "urn:vam:connector:hub.squrell.cloud/squrell/cornerstone",
+      "artifacts": [
+        {
+          "kind": "connector",
+          "path": "listings/cornerstone/connectors/cornerstone"
+        },
+        {
+          "kind": "skill",
+          "path": "listings/cornerstone/skills/csod-learning"
+        },
+        {
+          "kind": "skill",
+          "path": "listings/cornerstone/skills/csod-core-hr"
+        },
+        {
+          "kind": "skill",
+          "path": "listings/cornerstone/skills/csod-performance"
+        },
+        {
+          "kind": "skill",
+          "path": "listings/cornerstone/skills/csod-recruiting"
+        },
+        {
+          "kind": "playbook",
+          "path": "listings/cornerstone/playbooks/assign-training"
+        },
+        {
+          "kind": "agent",
+          "path": "listings/cornerstone/agents/cornerstone-assistant"
+        }
+      ],
+      "ref": "cornerstone-v0.1.0",
+      "requiresNode": ">=0.1.0"
+    },
+    {
       "id": "box",
       "displayName": "Box",
       "description": "Find files in the member's Box and answer questions from them, through their own Box connection. Read-only. Needs the org admin to enter the client id and secret of their Box MCP server integration.",

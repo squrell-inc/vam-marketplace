@@ -1,10 +1,9 @@
-# Box listing (waiting for VAM connectors Phase 5)
+# Box listing (VAM connectors Phase 5)
 
-**Status: not released, do not tag.** This listing needs the admin-supplied client of VAM
-connectors Phase 5 (`squrell-inc/VAM`, `design/connectors.md` §13, decisions D28 and D29). Until
-a `vamd` with Phase 5 is pinned in CI, `vam catalog validate` refuses `connector.json` (the
-`client` field and `clientSecret: "org_vault"` are new), so CI on this branch is expected to fail
-at validation. The tag `box-v1.0.0` does not exist yet either.
+**Status: prepared for testing and review.** This listing utilizes the admin-supplied client model of VAM
+connectors Phase 5 (`squrell-inc/VAM`, `design/connectors.md` §13, decisions D28 and D29), which is
+supported by the VAM specification (`crates/vam-spec`). Box uses `"client": "org"` with
+`"clientSecret": "org_vault"` for secure node-side credential storage and exchange.
 
 ## Why Box needs Phase 5
 
