@@ -1,7 +1,7 @@
 ---
 id: "urn:vam:skill:hub.squrell.cloud/squrell/m365-mail"
 name: "m365-mail"
-version: "1.0.2"
+version: "1.0.3"
 description: "Read the member's Microsoft 365 mail and calendar; draft, send and book only with their approval"
 ---
 
@@ -19,11 +19,16 @@ Every call is made as the member with their access token; you never see or handl
   the newest mail whatever its age ("the latest 5 mails" is `top: 5` and nothing else). `query`
   cannot be combined with a time window. `top` is at most 25 (default 10); ask for more pages only if the member
   wants them. It returns an id, sender, subject, time and a short preview for each message. The
-  result shows as a mail card.
+  result shows as a mail card. Call mail_search once per request; use `top` for the count the
+  member asked for, not a second call. The member sees the result as a card: do not repeat the
+  list or rebuild it as a table. Answer in one or two lines: how many, and anything that needs
+  attention.
 - **mail_read** reads one whole message by the `id` mail_search returned. Read before you reply.
 - **calendar_list** shows events between `start` and `end` (default: the next seven days).
 - **calendar_find_slots** suggests free times for the member and optional `attendees` (email
-  addresses). It only suggests; it books nothing. The result shows as a slot card.
+  addresses). It only suggests; it books nothing. The result shows as a slot card. The member
+  sees the result as a card: do not repeat the list or rebuild it as a table. Answer in one or two
+  lines: how many, and anything that needs attention.
 - **mail_draft** saves a draft in the member's Drafts folder. Nobody receives it. Use it to
   show the wording you propose.
 - **mail_send** sends a mail. **calendar_create_event** books an event and invites attendees.

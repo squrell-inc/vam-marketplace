@@ -142,10 +142,18 @@ export function recipients(list: string[]) {
   return list.map((address) => ({ emailAddress: { address } }));
 }
 
+/**
+ * A sender for display: `Name <address>` when the address is an SMTP address. Mail from inside an
+ * Exchange organization can carry its X.500 address (`/O=EXCHANGELABS/OU=.../CN=...`), which is no
+ * use to the member: then the name alone, and the address only when there is no name.
+ */
 export function sender(from: any): string {
   const e = from?.emailAddress;
   if (!e) return "";
-  return e.name && e.address ? `${e.name} <${e.address}>` : e.address || e.name || "";
+  const name = typeof e.name === "string" ? e.name.trim() : "";
+  const address = typeof e.address === "string" ? e.address.trim() : "";
+  if (address.includes("@")) return name ? `${name} <${address}>` : address;
+  return name || address;
 }
 
 /** Graph ids are URL-safe base64 with `=` and `-`; nothing else is let into a path. */
