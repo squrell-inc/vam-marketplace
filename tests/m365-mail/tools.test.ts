@@ -72,6 +72,19 @@ describe("mail_search", () => {
     expect(p.searchParams.has("$search")).toBe(false);
   });
 
+  test("with no window it lists the newest mail whatever its age", async () => {
+    const { searchPath } = await mod("mail_search.ts");
+    const p = new URL("https://x" + searchPath({ top: 5 }, new Date("2026-11-09T12:00:00Z")));
+    expect(p.searchParams.has("$filter")).toBe(false);
+    expect(p.searchParams.get("$orderby")).toBe("receivedDateTime desc");
+    expect(p.searchParams.get("$top")).toBe("5");
+    expect(p.searchParams.has("$search")).toBe(false);
+    const until = new URL("https://x" + searchPath({ until: "2026-11-09T12:00:00Z" }, new Date("2026-11-09T18:00:00Z")));
+    expect(until.searchParams.get("$filter")).toBe(
+      "receivedDateTime ge 2026-11-08T18:00:00.000Z and receivedDateTime lt 2026-11-09T12:00:00.000Z",
+    );
+  });
+
   test("a calendar day is a since/until window, newest first", async () => {
     const { searchPath } = await mod("mail_search.ts");
     const p = new URL("https://x" + searchPath({ since: "2026-11-19T00:00:00-05:00", until: "2026-11-20T00:00:00-05:00" }));

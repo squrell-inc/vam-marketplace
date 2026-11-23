@@ -29,10 +29,13 @@ export function searchPath(args: Record<string, any>, now: Date = new Date()): s
     if ((since || until) && args.sinceHours !== undefined) {
       throw new ToolError("Give 'since'/'until' or 'sinceHours', not both.");
     }
-    const from = since || new Date(now.getTime() - whole(args, "sinceHours", 24, 1, 24 * 31) * 3600_000).toISOString();
-    if (until && until <= from) throw new ToolError("'until' must be after 'since'.");
-    const filter = until ? `receivedDateTime ge ${from} and receivedDateTime lt ${until}` : `receivedDateTime ge ${from}`;
-    q.push(`$filter=${encodeURIComponent(filter)}`);
+    // No window at all: the newest mail, however old ("the latest 5 mails").
+    if (since || until || args.sinceHours !== undefined) {
+      const from = since || new Date(now.getTime() - whole(args, "sinceHours", 24, 1, 24 * 31) * 3600_000).toISOString();
+      if (until && until <= from) throw new ToolError("'until' must be after 'since'.");
+      const filter = until ? `receivedDateTime ge ${from} and receivedDateTime lt ${until}` : `receivedDateTime ge ${from}`;
+      q.push(`$filter=${encodeURIComponent(filter)}`);
+    }
     q.push(`$orderby=${encodeURIComponent("receivedDateTime desc")}`);
   }
   return `/v1.0/me/messages?${q.join("&")}`;
