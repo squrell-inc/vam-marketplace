@@ -26,7 +26,7 @@ Aligned with VAM’s real schema (same idea as Box admin-supplied client + M365 
 | `provider.profile` | `"discover"` | Profile VAM accepts today |
 | `provider.scopes` | 11 CSOD scopes (≤ 20) | Default scope list on the connector |
 | `connection.holder` | `"user"` | Required by VAM v1 |
-| `bindings` | `csod` → `vamsec_csod` → `example.csod.com` | Skills use this placeholder over egress |
+| `bindings` | `csod` → `vamsec_cornerstone_csod` → `{subdomain}.csod.com` | Skills use this placeholder over egress |
 
 **Not in the schema yet (so no UI field):** portal base URL / `{corp}.csod.com` (VAM Phase 6 company address).  
 **Not implemented yet:** full CSOD `client_credentials` token exchange on the node.
@@ -59,7 +59,7 @@ Aligned with VAM’s real schema (same idea as Box admin-supplied client + M365 
 - Members must be signed into VAM (**Log In** or **SSO Login**).
 - They never enter CSOD client id/secret.
 - Writes use member approval (`ask`).
-- Tools call egress with `Authorization: vamsec_csod`.
+- Tools call egress with `Authorization: vamsec_cornerstone_csod`.
 
 ---
 
@@ -85,7 +85,7 @@ Aligned with VAM’s real schema (same idea as Box admin-supplied client + M365 
 
 Local result when last run: **10 pass**.
 
-Live CSOD smoke (manual, credentials not stored in repo): token OK; `employee:read` and `globalsearch:read` returned 200 against `vithiit.csod.com`.
+Live CSOD smoke (manual, credentials not stored in repo): token OK; `employee:read` and `globalsearch:read` returned 200 against a corp `*.csod.com` portal.
 
 ---
 

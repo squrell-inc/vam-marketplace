@@ -1,0 +1,52 @@
+{
+  "urn": "urn:vam:connector:hub.squrell.cloud/squrell/cornerstone",
+  "version": "0.1.2",
+  "displayName": "Cornerstone OnDemand",
+  "publisher": "Cornerstone OnDemand",
+  "description": "Learning, Core/HR, Performance and Recruiting through Cornerstone REST APIs. At Enable the admin enters the company portal label (for example acme for acme.csod.com) and the Edge API client id. Members must be signed into VAM; they never see those secrets. Writes wait for the member's approval.",
+  "icon": "cornerstone",
+  "provider": {
+    "kind": "oauth2",
+    "profile": "oauth",
+    "client": "org",
+    "clientSecret": "none",
+    "endpoints": {
+      "authorize": "https://{subdomain}.csod.com/services/api/oauth2/authorize",
+      "token": "https://{subdomain}.csod.com/services/api/oauth2/token"
+    },
+    "scopes": [
+      "training:read",
+      "transcript:read",
+      "employee:read",
+      "ou:read",
+      "outype:read",
+      "approval:read",
+      "job:read",
+      "performancereview:read",
+      "goal:read",
+      "jobrequisition:read",
+      "jobapplicant:read",
+      "globalsearch:read"
+    ],
+    "orgConsent": "none"
+  },
+  "tenant": {
+    "name": "subdomain",
+    "suffix": "csod.com",
+    "label": "Your Cornerstone portal"
+  },
+  "connection": {
+    "holder": "user",
+    "multiAccount": false,
+    "label": "Cornerstone portal"
+  },
+  "bindings": [
+    {
+      "name": "csod",
+      "placeholder": "vamsec_cornerstone_csod",
+      "value": "access_token",
+      "inject": "bearer",
+      "hosts": ["{subdomain}.csod.com"]
+    }
+  ]
+}

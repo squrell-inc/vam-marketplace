@@ -23,7 +23,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "vithiit.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -46,7 +46,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "vithiit.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -69,7 +69,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "vithiit.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "POST"
           ],
@@ -93,7 +93,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "vithiit.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "PUT"
           ],
@@ -117,7 +117,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "vithiit.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "PUT"
           ],

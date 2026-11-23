@@ -1,9 +1,11 @@
 // Tests for csod-learning tools against a fake egress proxy (no network, no token).
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
-import { readFileSync } from "node:fs";
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const skill = join(import.meta.dir, "../../listings/cornerstone/skills/csod-learning");
+const hintDir = join(skill, ".vam");
+const hintFile = join(hintDir, "connector.json");
 const recorded = (name: string) => JSON.parse(readFileSync(join(import.meta.dir, "recorded", name), "utf8"));
 
 type Seen = { method: string; target: string; auth: string; body: any };
@@ -12,7 +14,13 @@ let reply: { status: number; body: unknown } = { status: 200, body: {} };
 let server: ReturnType<typeof Bun.serve>;
 
 beforeAll(() => {
-  process.env.VAM_CSOD_HOST = "vithiit.csod.com";
+  // Same shape the node writes at session stage (CN-6.5) after admin Enable.
+  mkdirSync(hintDir, { recursive: true });
+  writeFileSync(
+    hintFile,
+    JSON.stringify({ connector: "cornerstone", hosts: { csod: "acme.csod.com" } }),
+  );
+  delete process.env.VAM_CSOD_HOST;
   server = Bun.serve({
     port: 0,
     async fetch(req) {
@@ -31,7 +39,10 @@ beforeAll(() => {
   });
   process.env.VAM_EGRESS_ENDPOINT = `http://127.0.0.1:${server.port}`;
 });
-afterAll(() => server.stop(true));
+afterAll(() => {
+  server.stop(true);
+  rmSync(hintDir, { recursive: true, force: true });
+});
 
 function answer(status: number, body: unknown) {
   seen = [];
@@ -47,10 +58,10 @@ describe("catalog_search", () => {
     const out = await catalogSearch({ query: "compliance", pageSize: 10 });
     expect(seen).toHaveLength(1);
     const url = new URL(seen[0].target);
-    expect(url.origin).toBe("https://vithiit.csod.com");
+    expect(url.origin).toBe("https://acme.csod.com");
     expect(url.pathname).toBe("/services/api/Catalog/GlobalSearch");
     expect(url.searchParams.get("SearchText")).toBe("compliance");
-    expect(seen[0].auth).toBe("vamsec_csod");
+    expect(seen[0].auth).toBe("vamsec_cornerstone_csod");
     expect(out.results[0]).toEqual({
       id: "lo-1001",
       title: "Compliance Foundations",
@@ -84,7 +95,7 @@ describe("assignment_create", () => {
     expect(new URL(seen[0].target).pathname).toBe(
       "/services/x/lms-learning-assignment/v1/learning-assignment/standard",
     );
-    expect(seen[0].auth).toBe("vamsec_csod");
+    expect(seen[0].auth).toBe("vamsec_cornerstone_csod");
     expect(out.created).toBe(true);
   });
 });

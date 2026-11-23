@@ -105,9 +105,13 @@
     {
       "id": "cornerstone",
       "displayName": "Cornerstone OnDemand",
-      "description": "Work with Cornerstone Learning, Core/HR, Performance and Recruiting through the built-in Cornerstone connector. At Enable the admin enters the Edge API client id and secret. Members must be signed into VAM (Log In or SSO). Writes wait for the member's approval.",
+      "description": "Work with Cornerstone Learning, Core/HR, Performance and Recruiting through Cornerstone REST APIs. At Enable the admin enters the company portal label (for example acme for acme.csod.com) and the Edge API client id. Members must be signed into VAM. Writes wait for the member's approval.",
       "connector": "urn:vam:connector:hub.squrell.cloud/squrell/cornerstone",
       "artifacts": [
+        {
+          "kind": "connector",
+          "path": "listings/cornerstone/connectors/cornerstone"
+        },
         {
           "kind": "skill",
           "path": "listings/cornerstone/skills/csod-learning"

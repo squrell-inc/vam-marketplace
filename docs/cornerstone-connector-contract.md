@@ -1,38 +1,35 @@
 # Cornerstone connector contract
 
-Built-in descriptor (VAM): `spec/connectors/cornerstone.json`  
+Marketplace connector: `listings/cornerstone/connectors/cornerstone/connector.json`  
 URN: `urn:vam:connector:hub.squrell.cloud/squrell/cornerstone`
 
-Same packaging pattern as **Microsoft 365**: the connector lives in the VAM node; this marketplace listing ships only skills / playbook / agent (no `connector.json`).
+This is an **HTTP / REST** connector (`profile: oauth` + `bindings`), not a remote MCP server. Skills call `*.csod.com` over egress with `vamsec_cornerstone_csod`.
 
 ## What the admin enters at Enable (Squrell-App form)
 
-VAM Phase 5 shape — **not** a custom `config.fields` block:
-
 | UI field | Comes from |
 |---|---|
+| **Your Cornerstone portal** | `tenant` → admin types the label only (e.g. `acme` → `acme.csod.com`) |
 | **Client ID** | `provider.client: "org"` → admin supplies at Enable |
-| **Client secret** | `provider.clientSecret: "org_vault"` → vaulted, never returned |
 
-Portal base URL / `{corp}.csod.com` as a company-address field is **Phase 6** in VAM (not in the connector schema yet). Binding host in the built-in file is `example.csod.com` for skill validation (same role as Graph’s fixed host for M365); real corp host wiring follows Phase 6.
-
-Scopes listed on the connector are the default set (max 20 per CSOD token call). Admin’s Edge app must include the scopes the skills need.
+Marketplace `profile: oauth` requires `clientSecret: none` (no secret field on Enable for this file). Scopes stay in the connector file. Binding host is `{subdomain}.csod.com`.
 
 ## Member auth
 
 | Actor | Authenticates how | Sees CSOD client secret? |
 |---|---|---|
 | **Every member** | VAM Log In or SSO Login | No |
-| **Admin** | Same, then Org → Connectors → Cornerstone → Enable (client id + secret) | Yes (enters once) |
+| **Admin** | Same, then Org → Connectors → Cornerstone → Enable (portal label + client id) | No (this marketplace file has `clientSecret: none`) |
 
 ## Runtime for skills
 
-- Placeholder: `vamsec_csod`
+- Placeholder: `vamsec_cornerstone_csod`
 - Binding name: `csod`
-- Skills never store client id/secret
+- Host template: `{subdomain}.csod.com`
+- Skills call HTTP REST via egress; never store client id
 
 ## CSOD token note
 
-Cornerstone’s public API uses **client_credentials**. VAM’s Enable form today stores org client id/secret for OAuth-style connectors (Box pattern). Full CSOD client-credentials token exchange + corp host still needs platform follow-up; the built-in file is aligned so the **admin credential form** matches what Squrell-App already renders.
+Cornerstone’s public API uses **client_credentials** against `POST …/services/api/oauth2/token`. Full org-secret vault + client_credentials exchange on the node is still platform follow-up; this listing is the HTTP REST marketplace shape (oauth + bindings + tenant), not MCP.
 
 See [cornerstone-member-auth-plan.md](cornerstone-member-auth-plan.md), [cornerstone-connector-plan.md](cornerstone-connector-plan.md).

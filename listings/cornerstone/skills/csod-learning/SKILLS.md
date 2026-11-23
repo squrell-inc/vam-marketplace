@@ -1,4 +1,4 @@
-﻿---
+---
 id: "urn:vam:skill:hub.squrell.cloud/squrell/csod-learning"
 name: "csod-learning"
 version: "1.0.1"
@@ -9,7 +9,7 @@ description: "Search catalog and transcripts, manage assignments and learning ob
 
 Work with Cornerstone Learning through the **org** Cornerstone connection.
 
-**Auth:** The member must already be signed into VAM (Log In or SSO Login). Tools never ask for Cornerstone client id/secret; the host injects `vamsec_csod` and the admin-configured token. API calls use the org service account; audit the VAM member who ran the tool.
+**Auth:** The member must already be signed into VAM (Log In or SSO Login). Tools never ask for Cornerstone client id/secret; the host injects `vamsec_cornerstone_csod` and the admin-configured token. The portal host comes from Enable (written to `.vam/connector.json` as `hosts.csod`); skills never hardcode a corp URL. API calls use the org service account; audit the VAM member who ran the tool.
 
 ## When to use each tool
 

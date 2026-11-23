@@ -1,16 +1,32 @@
 // Shared helpers for Cornerstone skill tools. Runs in the guest under Bun.
-// Portal host + scopes are hardcoded until VAM Enable supports baseUrl / scopes form fields.
-export const PLACEHOLDER = "vamsec_csod";
-export const DEFAULT_HOST = "vithiit.csod.com";
-export const CSOD_BASE_URL = "https://vithiit.csod.com";
-export const CSOD_SCOPES = "globalsearch:read employee:read transcript:read";
+// Manifest egress uses `{subdomain}.csod.com`. The node writes the filled host into
+// `.vam/connector.json` after Enable (CN-6.5). No portal URL is hardcoded here.
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
+export const PLACEHOLDER = "vamsec_cornerstone_csod";
 export class ToolError extends Error {}
 export function proxyEndpoint(): string {
   return process.env.VAM_EGRESS_ENDPOINT || "http://127.0.0.1:3128";
 }
+function hostFromHint(): string {
+  try {
+    const raw = readFileSync(join(import.meta.dir, "..", ".vam", "connector.json"), "utf8");
+    const v = JSON.parse(raw);
+    const h = v?.hosts?.csod;
+    return typeof h === "string" ? h.trim().toLowerCase() : "";
+  } catch {
+    return "";
+  }
+}
 export function csodHost(): string {
-  // Hardcoded corp host (form wiring later). Tests may override with VAM_CSOD_HOST.
-  const h = (process.env.VAM_CSOD_HOST || DEFAULT_HOST).trim().toLowerCase();
+  // Tests may set VAM_CSOD_HOST; in a session the node hint wins when env is unset.
+  const h = (process.env.VAM_CSOD_HOST || hostFromHint()).trim().toLowerCase();
+  if (!h) {
+    throw new ToolError(
+      "Cornerstone portal is not configured. An admin must Enable the connector with the company address.",
+    );
+  }
   if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?\.csod\.com$/.test(h)) {
     throw new ToolError("Cornerstone host must look like acme.csod.com.");
   }
