@@ -164,7 +164,7 @@
         }
       ],
       "ref": "box-v1.0.1",
-      "requiresNode": ">=0.2.0"
+      "requiresNode": ">=0.1.0"
     },
     {
       "id": "monday",
