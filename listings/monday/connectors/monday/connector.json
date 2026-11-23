@@ -1,6 +1,6 @@
 {
   "urn": "urn:vam:connector:hub.squrell.cloud/squrell/monday",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "displayName": "monday.com",
   "publisher": "monday.com (hosted MCP server)",
   "description": "Read and update workspaces, boards, items, columns and updates through the member's own monday.com connection. Reads run freely; writes wait for member approval.",

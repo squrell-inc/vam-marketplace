@@ -1,7 +1,7 @@
 ---
 id: "urn:vam:skill:hub.squrell.cloud/squrell/box-documents"
 name: "box-documents"
-version: "1.0.0"
+version: "1.0.1"
 description: "How to find files and folders in the member's Box and answer questions from them with the Box connector's tools"
 ---
 

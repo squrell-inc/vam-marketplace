@@ -99,7 +99,7 @@
           "path": "listings/welead/agents/welead-assistant"
         }
       ],
-      "ref": "welead-v1.0.1",
+      "ref": "welead-v1.1.0",
       "requiresNode": ">=0.1.0"
     },
     {
@@ -163,7 +163,7 @@
           "path": "listings/box/agents/box-assistant"
         }
       ],
-      "ref": "box-v1.0.0",
+      "ref": "box-v1.0.1",
       "requiresNode": ">=0.2.0"
     },
     {
@@ -189,7 +189,7 @@
           "path": "listings/monday/agents/monday-assistant"
         }
       ],
-      "ref": "monday-v1.0.0",
+      "ref": "monday-v1.0.1",
       "requiresNode": ">=0.1.0"
     }
   ]

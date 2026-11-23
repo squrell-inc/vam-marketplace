@@ -11,7 +11,7 @@
     "skillRefs": [
       {
         "resourceId": { "urn": "urn:vam:skill:hub.squrell.cloud/squrell/welead-workspace" },
-        "version": { "major": 1, "minor": 0, "patch": 0 }
+        "version": { "major": 1, "minor": 1, "patch": 0 }
       }
     ],
     "permissions": {

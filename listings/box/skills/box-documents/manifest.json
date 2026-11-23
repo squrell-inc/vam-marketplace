@@ -1,6 +1,6 @@
 {
   "resourceId": { "urn": "urn:vam:skill:hub.squrell.cloud/squrell/box-documents" },
-  "version": { "major": 1, "minor": 0, "patch": 0 },
+  "version": { "major": 1, "minor": 0, "patch": 1 },
   "description": "How to find files and folders in the member's Box and answer questions from them with the Box connector's tools.",
   "requiresConnector": "urn:vam:connector:hub.squrell.cloud/squrell/box",
   "tools": []
