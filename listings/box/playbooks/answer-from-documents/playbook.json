@@ -1,0 +1,57 @@
+{
+  "spec": {
+    "resourceId": { "urn": "urn:vam:playbook:hub.squrell.cloud/squrell/answer-from-documents" },
+    "displayName": "Answer from documents",
+    "description": "Find the Box files that answer the member's question, ask Box AI about them, and answer with the file names.",
+    "activation": {
+      "when": "Use when the member asks a question that should be answered from documents in their Box.",
+      "examples": ["What are the payment terms in our contract with Contoso? It's somewhere in Box."]
+    },
+    "requires": {
+      "skills": [
+        { "resourceId": { "urn": "urn:vam:skill:hub.squrell.cloud/squrell/box-documents" } }
+      ]
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "question": { "type": "string", "description": "The member's question" },
+        "where": { "type": "string", "description": "Words that name a folder or file to look in, such as 'Contracts 2026'" }
+      },
+      "required": ["question"],
+      "additionalProperties": false
+    },
+    "steps": [
+      {
+        "id": "find-files",
+        "description": "Find the files that can answer the question.",
+        "kind": "STEP_KIND_TASK",
+        "mode": "STEP_MODE_AGENTIC",
+        "instruction": "Load the box-documents skill. Use box__search_files_keyword with words from the question (and the where input, if given) to find at most five files that can answer it. If a folder is named, use box__search_folders_by_name and box__list_folder_content_by_folder_id. Record each file's id and exact name. If nothing fits, complete the step with the outcome failed and say what you searched for.",
+        "evidence": { "tool": "box__search_files_keyword", "result": "success" },
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "files": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": { "id": { "type": "string" }, "name": { "type": "string" } },
+                "required": ["id", "name"]
+              }
+            }
+          },
+          "required": ["files"]
+        }
+      },
+      {
+        "id": "answer",
+        "description": "Answer from the files and name them.",
+        "kind": "STEP_KIND_TASK",
+        "mode": "STEP_MODE_AGENTIC",
+        "after": ["find-files"],
+        "instruction": "Ask the question of the files from find-files: box__ai_qa_single_file for one file, box__ai_qa_multi_file for several. Answer the member in a few sentences using only what Box AI returned, and list the exact file names you used. If Box AI is not available, say so and give the file names so the member can open them."
+      }
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "catalog": "vam/1",
+  "root": "root",
+  "state": {},
+  "nodes": {
+    "root": {
+      "type": "List",
+      "props": {
+        "items": { "$data": "/clients" },
+        "empty": "No client accounts found"
+      },
+      "children": ["client_card"]
+    },
+    "client_card": {
+      "type": "Stack",
+      "props": { "direction": "vertical", "gap": "small" },
+      "children": ["client_header", "client_meta"]
+    },
+    "client_header": {
+      "type": "Stack",
+      "props": { "direction": "horizontal", "gap": "small" },
+      "children": ["name_text", "industry_badge"]
+    },
+    "name_text": {
+      "type": "Text",
+      "props": { "text": { "$item": "/name" }, "emphasis": "strong" }
+    },
+    "industry_badge": {
+      "type": "Badge",
+      "props": { "text": { "$item": "/industry" }, "tone": "neutral" }
+    },
+    "client_meta": {
+      "type": "Stack",
+      "props": { "direction": "horizontal", "gap": "medium" },
+      "children": ["contact_person", "email_text", "deals_count"]
+    },
+    "contact_person": {
+      "type": "KeyValue",
+      "props": { "label": "Contact", "value": { "$item": "/contactPerson" } }
+    },
+    "email_text": {
+      "type": "KeyValue",
+      "props": { "label": "Email", "value": { "$item": "/email" } }
+    },
+    "deals_count": {
+      "type": "KeyValue",
+      "props": { "label": "Active Deals", "value": { "$item": "/activeDeals" } }
+    }
+  }
+}

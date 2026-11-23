@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "catalog": "vam/1",
+  "root": "root",
+  "state": {},
+  "nodes": {
+    "root": {
+      "type": "List",
+      "props": { "items": { "$data": "/updates" }, "empty": "No updates found" },
+      "children": ["row"]
+    },
+    "row": {
+      "type": "Stack",
+      "props": { "direction": "vertical", "gap": "small" },
+      "children": ["c0", "c1"]
+    },
+    "c0": { "type": "Text", "props": { "text": { "$item": "/creator" } } },
+    "c1": { "type": "Text", "props": { "text": { "$item": "/body" } } }
+  }
+}

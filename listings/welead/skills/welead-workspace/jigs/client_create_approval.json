@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "catalog": "vam/1",
+  "root": "root",
+  "state": {
+    "name": "",
+    "industry": "",
+    "contact_name": "",
+    "email": ""
+  },
+  "nodes": {
+    "root": {
+      "type": "Stack",
+      "props": { "gap": "medium" },
+      "children": ["title", "in_name", "in_industry", "in_contact", "in_email", "actions"]
+    },
+    "title": {
+      "type": "Text",
+      "props": { "text": "Register New Corporate Client", "emphasis": "strong" }
+    },
+    "in_name": {
+      "type": "Input",
+      "props": { "label": "Client / Company Name", "value": { "$state": "name" } }
+    },
+    "in_industry": {
+      "type": "Input",
+      "props": { "label": "Industry / Vertical", "value": { "$state": "industry" } }
+    },
+    "in_contact": {
+      "type": "Input",
+      "props": { "label": "Primary Contact Person", "value": { "$state": "contact_name" } }
+    },
+    "in_email": {
+      "type": "Input",
+      "props": { "label": "Contact Email", "value": { "$state": "email" } }
+    },
+    "actions": {
+      "type": "Stack",
+      "props": { "direction": "horizontal", "gap": "small" },
+      "children": ["btn_approve", "btn_deny"]
+    },
+    "btn_approve": {
+      "type": "Button",
+      "props": {
+        "label": "Register Client",
+        "tone": "success",
+        "action": {
+          "event": "submit",
+          "with": ["name", "industry", "contact_name", "email"],
+          "set": { "decision": "approve" }
+        }
+      }
+    },
+    "btn_deny": {
+      "type": "Button",
+      "props": {
+        "label": "Cancel",
+        "tone": "danger",
+        "action": {
+          "event": "submit",
+          "with": [],
+          "set": { "decision": "deny" }
+        }
+      }
+    }
+  }
+}

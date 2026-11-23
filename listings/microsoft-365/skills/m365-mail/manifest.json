@@ -5,15 +5,15 @@
   "version": {
     "major": 1,
     "minor": 0,
-    "patch": 0
+    "patch": 3
   },
   "description": "Read the member's Microsoft 365 mail and calendar; draft, send and book only with their approval.",
   "requiresConnector": "urn:vam:connector:hub.squrell.cloud/squrell/microsoft-365",
   "tools": [
     {
       "name": "mail_search",
-      "description": "Searches the member's mailbox. With `query` it is a Microsoft Graph search over subject, sender and body (relevance order); without it, it lists the newest mail from the last `sinceHours` hours. Returns id, sender, subject, time and a short preview.",
-      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"query\":{\"type\":\"string\"},\"sinceHours\":{\"type\":\"integer\"},\"top\":{\"type\":\"integer\"}}}",
+      "description": "Searches the member's mailbox. With `query` it is a Microsoft Graph search over subject, sender and body (relevance order). Without it, it lists mail newest first: between `since` and `until` (date-times with a zone, e.g. a calendar day in the member's zone), or from the last `sinceHours` hours; with none of these, the newest mail whatever its age. `top` is at most 25 (default 10). Returns id, sender, subject, time and a short preview.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"query\":{\"type\":\"string\"},\"since\":{\"type\":\"string\"},\"until\":{\"type\":\"string\"},\"sinceHours\":{\"type\":\"integer\"},\"top\":{\"type\":\"integer\"}}}",
       "outputSchemaJson": "{\"type\":\"object\",\"properties\":{\"messages\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"from\":{\"type\":\"string\"},\"subject\":{\"type\":\"string\"},\"receivedAt\":{\"type\":\"string\"},\"preview\":{\"type\":\"string\"},\"unread\":{\"type\":\"boolean\"}}}}},\"required\":[\"messages\"]}",
       "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
       "localExec": {

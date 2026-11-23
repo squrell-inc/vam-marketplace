@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "catalog": "vam/1",
+  "root": "root",
+  "state": { "itemId": "", "body": "" },
+  "nodes": {
+    "root": {
+      "type": "Stack",
+      "props": { "gap": "medium" },
+      "children": ["in_item", "in_body", "row"]
+    },
+    "in_item": { "type": "Input", "props": { "label": "Item ID", "value": { "$state": "itemId" } } },
+    "in_body": { "type": "TextArea", "props": { "label": "Update / Comment", "value": { "$state": "body" } } },
+    "row": {
+      "type": "Stack",
+      "props": { "direction": "horizontal", "gap": "small" },
+      "children": ["ok", "no"]
+    },
+    "ok": {
+      "type": "Button",
+      "props": {
+        "label": "Post update",
+        "tone": "success",
+        "action": { "event": "submit", "with": ["itemId", "body"], "set": { "decision": "approve" } }
+      }
+    },
+    "no": {
+      "type": "Button",
+      "props": {
+        "label": "Deny",
+        "tone": "danger",
+        "action": { "event": "submit", "with": [], "set": { "decision": "deny" } }
+      }
+    }
+  }
+}

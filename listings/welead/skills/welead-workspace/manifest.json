@@ -1,7 +1,82 @@
 {
   "resourceId": { "urn": "urn:vam:skill:hub.squrell.cloud/squrell/welead-workspace" },
-  "version": { "major": 1, "minor": 0, "patch": 0 },
-  "description": "How to read and update the member's WeLead pipeline leads, activities, corporate clients, comments and approvals with the WeLead connector's tools.",
+  "version": { "major": 1, "minor": 1, "patch": 0 },
+  "description": "Read and update the member's WeLead pipeline leads, activities, corporate clients, comments and approvals with the WeLead connector's tools.",
   "requiresConnector": "urn:vam:connector:hub.squrell.cloud/squrell/welead",
-  "tools": []
+  "tools": [
+    {
+      "name": "list_leads",
+      "description": "Lists and filters leads across pipeline stages, statuses, offerings, and search query. Renders the interactive leads list card.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"org\":{\"type\":\"string\"},\"query\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"stage\":{\"type\":\"string\"},\"top\":{\"type\":\"integer\"}}}",
+      "outputSchemaJson": "{\"type\":\"object\",\"properties\":{\"leads\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"title\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"clientName\":{\"type\":\"string\"},\"valueLakhs\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}}},\"required\":[\"leads\"]}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./list_leads.ts"
+      },
+      "ui": {
+        "show": "leads_list"
+      }
+    },
+    {
+      "name": "create_lead",
+      "description": "Creates a new opportunity lead in WeLead pipeline. Displays an approval JIG card for confirmation before creating the lead.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"customer_name\":{\"type\":\"string\"},\"project_name\":{\"type\":\"string\"},\"value_lakhs\":{\"type\":\"number\"},\"offerings\":{\"type\":\"string\"},\"client_id\":{\"type\":\"string\"}},\"required\":[\"customer_name\",\"project_name\"]}",
+      "outputSchemaJson": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"title\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"}}}",
+      "sideEffect": "SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL",
+      "approvalRequired": true,
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./create_lead.ts"
+      },
+      "ui": {
+        "ask": "lead_create_approval"
+      }
+    },
+    {
+      "name": "update_lead_status",
+      "description": "Transitions a lead through pipeline stages (e.g. Qualified, Proposal Sent, Negotiation, Won, Lost). Asks for confirmation with an interactive update JIG card.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"lead_id\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"notes\":{\"type\":\"string\"}},\"required\":[\"lead_id\",\"status\"]}",
+      "outputSchemaJson": "{\"type\":\"object\",\"properties\":{\"success\":{\"type\":\"boolean\"},\"lead_id\":{\"type\":\"string\"},\"new_status\":{\"type\":\"string\"}}}",
+      "sideEffect": "SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL",
+      "approvalRequired": true,
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./update_lead_status.ts"
+      },
+      "ui": {
+        "ask": "lead_update_approval"
+      }
+    },
+    {
+      "name": "list_clients",
+      "description": "Lists corporate client accounts with primary contacts and active deal counts. Renders interactive client accounts cards.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"query\":{\"type\":\"string\"},\"industry\":{\"type\":\"string\"}}}",
+      "outputSchemaJson": "{\"type\":\"object\",\"properties\":{\"clients\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"industry\":{\"type\":\"string\"},\"contactPerson\":{\"type\":\"string\"},\"email\":{\"type\":\"string\"},\"activeDeals\":{\"type\":\"string\"}}}}},\"required\":[\"clients\"]}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./list_clients.ts"
+      },
+      "ui": {
+        "show": "clients_list"
+      }
+    },
+    {
+      "name": "create_client",
+      "description": "Registers a new corporate client account in WeLead. Asks for confirmation using a client registration approval JIG card.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"},\"industry\":{\"type\":\"string\"},\"contact_name\":{\"type\":\"string\"},\"email\":{\"type\":\"string\"}},\"required\":[\"name\"]}",
+      "outputSchemaJson": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"}}}",
+      "sideEffect": "SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL",
+      "approvalRequired": true,
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./create_client.ts"
+      },
+      "ui": {
+        "ask": "client_create_approval"
+      }
+    }
+  ]
 }
+

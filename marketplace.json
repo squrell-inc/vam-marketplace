@@ -21,7 +21,7 @@
           "path": "listings/microsoft-365/agents/executive-assistant"
         }
       ],
-      "ref": "microsoft-365-v1.0.0",
+      "ref": "microsoft-365-v1.0.3",
       "requiresNode": ">=0.1.0"
     },
     {
@@ -47,7 +47,7 @@
           "path": "listings/notion/agents/notion-assistant"
         }
       ],
-      "ref": "notion-v1.0.0",
+      "ref": "notion-v1.0.1",
       "requiresNode": ">=0.1.0"
     },
     {
@@ -73,7 +73,7 @@
           "path": "listings/wetrack/agents/wetrack-assistant"
         }
       ],
-      "ref": "wetrack-v1.0.0",
+      "ref": "wetrack-v1.0.1",
       "requiresNode": ">=0.1.0"
     },
     {
@@ -99,7 +99,7 @@
           "path": "listings/welead/agents/welead-assistant"
         }
       ],
-      "ref": "welead-v1.0.0",
+      "ref": "welead-v1.1.0",
       "requiresNode": ">=0.1.0"
     },
     {
@@ -138,6 +138,58 @@
         }
       ],
       "ref": "cornerstone-v0.1.2",
+      "requiresNode": ">=0.1.0"
+    },
+    {
+      "id": "box",
+      "displayName": "Box",
+      "description": "Find files in the member's Box and answer questions from them, through their own Box connection. Read-only. Needs the org admin to enter the client id and secret of their Box MCP server integration.",
+      "connector": "urn:vam:connector:hub.squrell.cloud/squrell/box",
+      "artifacts": [
+        {
+          "kind": "connector",
+          "path": "listings/box/connectors/box"
+        },
+        {
+          "kind": "skill",
+          "path": "listings/box/skills/box-documents"
+        },
+        {
+          "kind": "playbook",
+          "path": "listings/box/playbooks/answer-from-documents"
+        },
+        {
+          "kind": "agent",
+          "path": "listings/box/agents/box-assistant"
+        }
+      ],
+      "ref": "box-v1.0.1",
+      "requiresNode": ">=0.2.0"
+    },
+    {
+      "id": "monday",
+      "displayName": "monday.com",
+      "description": "Read and update workspaces, boards, items, columns and updates through the member's own monday.com connection. Changes are made only after the member approves.",
+      "connector": "urn:vam:connector:hub.squrell.cloud/squrell/monday",
+      "artifacts": [
+        {
+          "kind": "connector",
+          "path": "listings/monday/connectors/monday"
+        },
+        {
+          "kind": "skill",
+          "path": "listings/monday/skills/monday-workspace"
+        },
+        {
+          "kind": "playbook",
+          "path": "listings/monday/playbooks/create-task"
+        },
+        {
+          "kind": "agent",
+          "path": "listings/monday/agents/monday-assistant"
+        }
+      ],
+      "ref": "monday-v1.0.1",
       "requiresNode": ">=0.1.0"
     }
   ]

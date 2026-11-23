@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "catalog": "vam/1",
+  "root": "root",
+  "state": { "workspaceId": "", "boardName": "", "boardKind": "" },
+  "nodes": {
+    "root": {
+      "type": "Stack",
+      "props": { "gap": "medium" },
+      "children": ["in_name", "in_workspace", "in_kind", "row"]
+    },
+    "in_name": { "type": "Input", "props": { "label": "Board name", "value": { "$state": "boardName" } } },
+    "in_workspace": { "type": "Input", "props": { "label": "Workspace ID (optional)", "value": { "$state": "workspaceId" } } },
+    "in_kind": { "type": "Input", "props": { "label": "Board kind (public / private / share)", "value": { "$state": "boardKind" } } },
+    "row": {
+      "type": "Stack",
+      "props": { "direction": "horizontal", "gap": "small" },
+      "children": ["ok", "no"]
+    },
+    "ok": {
+      "type": "Button",
+      "props": {
+        "label": "Create board",
+        "tone": "success",
+        "action": { "event": "submit", "with": ["workspaceId", "boardName", "boardKind"], "set": { "decision": "approve" } }
+      }
+    },
+    "no": {
+      "type": "Button",
+      "props": {
+        "label": "Deny",
+        "tone": "danger",
+        "action": { "event": "submit", "with": [], "set": { "decision": "deny" } }
+      }
+    }
+  }
+}

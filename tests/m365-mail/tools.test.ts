@@ -72,9 +72,41 @@ describe("mail_search", () => {
     expect(p.searchParams.has("$search")).toBe(false);
   });
 
+  test("with no window it lists the newest mail whatever its age", async () => {
+    const { searchPath } = await mod("mail_search.ts");
+    const p = new URL("https://x" + searchPath({ top: 5 }, new Date("2026-11-09T12:00:00Z")));
+    expect(p.searchParams.has("$filter")).toBe(false);
+    expect(p.searchParams.get("$orderby")).toBe("receivedDateTime desc");
+    expect(p.searchParams.get("$top")).toBe("5");
+    expect(p.searchParams.has("$search")).toBe(false);
+    const until = new URL("https://x" + searchPath({ until: "2026-11-09T12:00:00Z" }, new Date("2026-11-09T18:00:00Z")));
+    expect(until.searchParams.get("$filter")).toBe(
+      "receivedDateTime ge 2026-11-08T18:00:00.000Z and receivedDateTime lt 2026-11-09T12:00:00.000Z",
+    );
+  });
+
+  test("a calendar day is a since/until window, newest first", async () => {
+    const { searchPath } = await mod("mail_search.ts");
+    const p = new URL("https://x" + searchPath({ since: "2026-11-19T00:00:00-05:00", until: "2026-11-20T00:00:00-05:00" }));
+    expect(p.searchParams.get("$filter")).toBe(
+      "receivedDateTime ge 2026-11-19T05:00:00.000Z and receivedDateTime lt 2026-11-20T05:00:00.000Z",
+    );
+    expect(p.searchParams.get("$orderby")).toBe("receivedDateTime desc");
+    expect(p.searchParams.get("$top")).toBe("10");
+  });
+
+  test("a window needs a zone, an order, and no query", async () => {
+    const { searchPath } = await mod("mail_search.ts");
+    expect(() => searchPath({ since: "2026-11-19T00:00:00" })).toThrow("'since'");
+    expect(() => searchPath({ since: "2026-11-20T00:00:00Z", until: "2026-11-19T00:00:00Z" })).toThrow("'until'");
+    expect(() => searchPath({ query: "plan", since: "2026-11-19T00:00:00Z" })).toThrow("'query'");
+    expect(() => searchPath({ since: "2026-11-19T00:00:00Z", sinceHours: 24 })).toThrow("not both");
+  });
+
   test("rejects a bad size", async () => {
     const { mailSearch } = await mod("mail_search.ts");
     await expect(mailSearch({ top: 500 })).rejects.toThrow("'top'");
+    await expect(mailSearch({ top: 26 })).rejects.toThrow("'top'");
   });
 });
 
@@ -166,6 +198,37 @@ describe("writes", () => {
   test("calendar_create_event refuses an end before the start", async () => {
     const { eventBody } = await mod("calendar_create_event.ts");
     expect(() => eventBody({ subject: "x", start: "2026-11-10T10:00:00", end: "2026-11-10T09:00:00" })).toThrow("'end' must be after 'start'");
+  });
+});
+
+describe("sender", () => {
+  const X500 =
+    "/O=EXCHANGELABS/OU=EXCHANGE ADMINISTRATIVE GROUP (FYDIBOHF23SPDLT)/CN=RECIPIENTS/CN=015A2A7B3C4D4E5F8091A2B3C4D5E6F7-09";
+
+  test("an internal Exchange sender shows the name, not its X.500 address", async () => {
+    const { shape } = await mod("mail_search.ts");
+    const out = shape({
+      value: [
+        {
+          id: "m1",
+          subject: "Standup",
+          receivedDateTime: "2026-11-23T08:00:00Z",
+          bodyPreview: "",
+          isRead: false,
+          from: { emailAddress: { name: "Naga Sathya Abhilash Bollu", address: X500 } },
+        },
+      ],
+    });
+    expect(out.messages[0].from).toBe("Naga Sathya Abhilash Bollu");
+  });
+
+  test("an SMTP sender keeps its address; a missing name or address falls back", async () => {
+    const { sender } = await mod("lib/graph.ts");
+    expect(sender({ emailAddress: { name: "Ana", address: "ana@example.com" } })).toBe("Ana <ana@example.com>");
+    expect(sender({ emailAddress: { address: "bo@example.com" } })).toBe("bo@example.com");
+    expect(sender({ emailAddress: { name: "", address: X500 } })).toBe(X500);
+    expect(sender({ emailAddress: { name: "Cy" } })).toBe("Cy");
+    expect(sender({})).toBe("");
   });
 });
 
