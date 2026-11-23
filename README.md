@@ -12,6 +12,8 @@ and admits them read-only, marked as Squrell content.
 | `wetrack` | a connector for WeTrack's hosted MCP server at `https://wetrack.vithiit.com/api/mcp` (reads run freely, ticket, comment and sprint writes ask first), the `wetrack-workspace` skill, the File a ticket playbook, the WeTrack assistant agent. |
 | `welead` | a connector for WeLead's hosted MCP server at `https://welead.vithiit.com/mcp` (reads run freely, lead, client, comment and approval writes ask first), the `welead-workspace` skill, the Create a lead playbook, the WeLead assistant agent. |
 | `cornerstone` | a connector for Cornerstone OnDemand (member sign-in, no client secret; reads run freely, writes ask first), the `csod-learning`, `csod-core-hr`, `csod-performance` and `csod-recruiting` skills, the Assign training playbook, the Cornerstone assistant agent. |
+| `box` | a connector for Box's hosted MCP server at `https://mcp.box.com` with a client id and secret the org admin enters (needs VAM connectors Phase 5; read-only tools), the `box-documents` skill, the Answer from documents playbook, the Box assistant agent. See [`docs/listing-box.md`](docs/listing-box.md). |
+| `monday` | a connector for monday.com's hosted MCP server at `https://mcp.monday.com/mcp` (reads run freely, item, update, column, board and workspace writes ask first), the `monday-workspace` skill, the Create a task playbook, the monday.com assistant agent. See [`docs/listing-monday.md`](docs/listing-monday.md). |
 
 Licence: Apache-2.0 (see `LICENSE`).
 

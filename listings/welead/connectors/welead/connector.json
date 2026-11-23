@@ -1,6 +1,6 @@
 {
   "urn": "urn:vam:connector:hub.squrell.cloud/squrell/welead",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "displayName": "WeLead MCP",
   "publisher": "WeLead (hosted MCP server)",
   "description": "Read and update the member's WeLead pipeline leads, activities, corporate clients, comments, attachments and approval requests through WeLead's hosted MCP server. Writes wait for the member's approval.",

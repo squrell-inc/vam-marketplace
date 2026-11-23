@@ -1,0 +1,105 @@
+{
+  "spec": {
+    "resourceId": {
+      "urn": "urn:vam:playbook:hub.squrell.cloud/squrell/create-task"
+    },
+    "displayName": "Create a task in monday.com",
+    "description": "Find the target monday.com board, draft the item details, ask the member to approve with an interactive JIG card, then create the task.",
+    "activation": {
+      "when": "Use when the member wants to create a new task, item, or action item on a monday.com board.",
+      "examples": [
+        "Create a task in our Sprint backlog board called Review security audit",
+        "Add an item to the Marketing board"
+      ]
+    },
+    "requires": {
+      "skills": [
+        {
+          "resourceId": {
+            "urn": "urn:vam:skill:hub.squrell.cloud/squrell/monday-workspace"
+          }
+        }
+      ]
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "itemName": {
+          "type": "string",
+          "description": "The name or title of the item/task to create"
+        },
+        "boardHint": {
+          "type": "string",
+          "description": "The name or partial name of the monday.com board"
+        },
+        "columnValues": {
+          "type": "string",
+          "description": "Optional column values or notes for the item"
+        }
+      },
+      "required": ["itemName"],
+      "additionalProperties": false
+    },
+    "steps": [
+      {
+        "id": "find-board",
+        "description": "Find the monday.com board for the item.",
+        "kind": "STEP_KIND_TASK",
+        "mode": "STEP_MODE_AGENTIC",
+        "instruction": "Load the monday-workspace skill. Use boards_list or workspaces_list to find the board matching boardHint (or inspect active boards via get_user_context). Pick the best match and record its boardId and boardName. If no matching board is found, complete the step with outcome failed and state what was searched.",
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "boardId": { "type": "string" },
+            "boardName": { "type": "string" }
+          },
+          "required": ["boardId", "boardName"]
+        }
+      },
+      {
+        "id": "draft-item",
+        "description": "Prepare the item details for member review.",
+        "kind": "STEP_KIND_TASK",
+        "mode": "STEP_MODE_AGENTIC",
+        "after": ["find-board"],
+        "instruction": "Prepare the item parameters using inputs.itemName and inputs.columnValues. Do not call creation tools in this step.",
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "itemName": { "type": "string" },
+            "summary": { "type": "string" }
+          },
+          "required": ["itemName", "summary"]
+        }
+      },
+      {
+        "id": "approve",
+        "description": "The member reviews the task and decides.",
+        "kind": "STEP_KIND_GATE",
+        "after": ["draft-item"],
+        "question": "Create item '{{steps.draft-item.output.itemName}}' on board '{{steps.find-board.output.boardName}}' in monday.com?",
+        "timeout": "86400s",
+        "options": [
+          { "label": "approved", "description": "Create the item" },
+          { "label": "rejected", "description": "Cancel without creating", "terminal": "OUTCOME_TERMINAL_SUCCEEDED" }
+        ]
+      },
+      {
+        "id": "create-item",
+        "description": "Create the approved item on monday.com.",
+        "kind": "STEP_KIND_TASK",
+        "mode": "STEP_MODE_AGENTIC",
+        "after": ["approve:approved"],
+        "instruction": "Call item_create (or monday__create_item) once to create the approved item on the target board identified in find-board with itemName from draft-item. The JIG approval card prompts the member with pre-filled inputs. Report the created item confirmation to the member.",
+        "evidence": { "tool": "item_create", "result": "success" }
+      }
+    ],
+    "guards": [
+      {
+        "tools": ["item_create", "monday__create_item"],
+        "sideEffects": ["SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL"],
+        "allowedWhen": ["approve:approved"]
+      }
+    ]
+  }
+}

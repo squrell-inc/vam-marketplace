@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "catalog": "vam/1",
+  "root": "root",
+  "state": { "boardId": "", "itemId": "", "columnValues": "" },
+  "nodes": {
+    "root": {
+      "type": "Stack",
+      "props": { "gap": "medium" },
+      "children": ["in_board", "in_item", "in_values", "row"]
+    },
+    "in_board": { "type": "Input", "props": { "label": "Board ID", "value": { "$state": "boardId" } } },
+    "in_item": { "type": "Input", "props": { "label": "Item ID", "value": { "$state": "itemId" } } },
+    "in_values": { "type": "TextArea", "props": { "label": "Column values (JSON)", "value": { "$state": "columnValues" } } },
+    "row": {
+      "type": "Stack",
+      "props": { "direction": "horizontal", "gap": "small" },
+      "children": ["ok", "no"]
+    },
+    "ok": {
+      "type": "Button",
+      "props": {
+        "label": "Update columns",
+        "tone": "success",
+        "action": { "event": "submit", "with": ["boardId", "itemId", "columnValues"], "set": { "decision": "approve" } }
+      }
+    },
+    "no": {
+      "type": "Button",
+      "props": {
+        "label": "Deny",
+        "tone": "danger",
+        "action": { "event": "submit", "with": [], "set": { "decision": "deny" } }
+      }
+    }
+  }
+}

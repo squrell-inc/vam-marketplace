@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "catalog": "vam/1",
+  "root": "root",
+  "state": {},
+  "nodes": {
+    "root": {
+      "type": "List",
+      "props": {
+        "items": { "$data": "/leads" },
+        "empty": "No leads found in pipeline"
+      },
+      "children": ["lead_card"]
+    },
+    "lead_card": {
+      "type": "Stack",
+      "props": { "direction": "vertical", "gap": "small" },
+      "children": ["header_row", "details_row"]
+    },
+    "header_row": {
+      "type": "Stack",
+      "props": { "direction": "horizontal", "gap": "small" },
+      "children": ["lead_title", "status_badge"]
+    },
+    "lead_title": {
+      "type": "Text",
+      "props": { "text": { "$item": "/title" }, "emphasis": "strong" }
+    },
+    "status_badge": {
+      "type": "Badge",
+      "props": { "text": { "$item": "/status" }, "tone": "info" }
+    },
+    "details_row": {
+      "type": "Stack",
+      "props": { "direction": "horizontal", "gap": "medium" },
+      "children": ["client_name", "value_display", "owner_name"]
+    },
+    "client_name": {
+      "type": "KeyValue",
+      "props": { "label": "Client", "value": { "$item": "/clientName" } }
+    },
+    "value_display": {
+      "type": "KeyValue",
+      "props": { "label": "Value (₹ Lakhs)", "value": { "$item": "/valueLakhs" } }
+    },
+    "owner_name": {
+      "type": "KeyValue",
+      "props": { "label": "Owner", "value": { "$item": "/owner" } }
+    }
+  }
+}

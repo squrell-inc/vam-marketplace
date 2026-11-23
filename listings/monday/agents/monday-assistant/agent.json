@@ -1,0 +1,68 @@
+{
+  "spec": {
+    "resourceId": {
+      "urn": "urn:vam:agent:hub.squrell.cloud/squrell/monday-assistant"
+    },
+    "displayName": "Monday Agent",
+    "description": "Reads and updates the member's monday.com workspaces, boards, items, and columns. Renders rich JIG cards for queries and requires approval cards for all changes.",
+    "role": "Monday Agent",
+    "systemInstructions": "You are Monday Agent, the member's assistant for monday.com Work OS. Load the monday-workspace skill before using the monday tools. Read boards, items, columns, updates, and workspaces freely; queries automatically render JIG cards in chat. Never create or update items, boards, groups, or columns without the JIG approval card, and do not repeat an action the member denied. When asked to create a task, run the create-task playbook. Be brief, name items and boards by their exact titles.",
+    "allowedPlaybookRefs": [
+      {
+        "resourceId": {
+          "urn": "urn:vam:playbook:hub.squrell.cloud/squrell/create-task"
+        }
+      }
+    ],
+    "skillRefs": [
+      {
+        "resourceId": {
+          "urn": "urn:vam:skill:hub.squrell.cloud/squrell/monday-workspace"
+        },
+        "version": {
+          "major": 1,
+          "minor": 0,
+          "patch": 1
+        }
+      }
+    ],
+    "permissions": {
+      "tools": {
+        "default": "deny",
+        "rules": [
+          { "target": "builtin:load_skill", "decision": "allow" },
+          { "target": "builtin:step_complete", "decision": "allow" },
+          { "target": "builtin:start_playbook", "decision": "allow" },
+          { "target": "skill:monday-workspace/workspaces_list", "decision": "allow" },
+          { "target": "skill:monday-workspace/boards_list", "decision": "allow" },
+          { "target": "skill:monday-workspace/board_items_get", "decision": "allow" },
+          { "target": "skill:monday-workspace/updates_get", "decision": "allow" },
+          { "target": "skill:monday-workspace/board_insights", "decision": "allow" },
+          { "target": "skill:monday-workspace/item_create", "decision": "ask" },
+          { "target": "skill:monday-workspace/item_change_column_values", "decision": "ask" },
+          { "target": "skill:monday-workspace/update_create", "decision": "ask" },
+          { "target": "skill:monday-workspace/board_create", "decision": "ask" },
+          { "target": "mcp:mcp.monday.com/mcp/list_workspaces", "decision": "allow" },
+          { "target": "mcp:mcp.monday.com/mcp/workspace_info", "decision": "allow" },
+          { "target": "mcp:mcp.monday.com/mcp/get_board_info", "decision": "allow" },
+          { "target": "mcp:mcp.monday.com/mcp/get_board_items_page", "decision": "allow" },
+          { "target": "mcp:mcp.monday.com/mcp/board_insights", "decision": "allow" },
+          { "target": "mcp:mcp.monday.com/mcp/get_board_activity", "decision": "allow" },
+          { "target": "mcp:mcp.monday.com/mcp/get_updates", "decision": "allow" },
+          { "target": "mcp:mcp.monday.com/mcp/get_column_type_info", "decision": "allow" },
+          { "target": "mcp:mcp.monday.com/mcp/list_users_and_teams", "decision": "allow" },
+          { "target": "mcp:mcp.monday.com/mcp/get_user_context", "decision": "allow" },
+          { "target": "mcp:mcp.monday.com/mcp/create_item", "decision": "ask" },
+          { "target": "mcp:mcp.monday.com/mcp/change_item_column_values", "decision": "ask" },
+          { "target": "mcp:mcp.monday.com/mcp/create_update", "decision": "ask" },
+          { "target": "mcp:mcp.monday.com/mcp/create_board", "decision": "ask" },
+          { "target": "mcp:mcp.monday.com/mcp/create_column", "decision": "ask" },
+          { "target": "mcp:mcp.monday.com/mcp/create_group", "decision": "ask" },
+          { "target": "mcp:mcp.monday.com/mcp/create_workspace", "decision": "ask" },
+          { "target": "mcp:mcp.monday.com/mcp/update_workspace", "decision": "ask" },
+          { "target": "mcp:mcp.monday.com/mcp/create_notification", "decision": "ask" }
+        ]
+      }
+    }
+  }
+}

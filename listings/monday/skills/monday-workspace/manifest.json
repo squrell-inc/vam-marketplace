@@ -1,0 +1,144 @@
+{
+  "resourceId": {
+    "urn": "urn:vam:skill:hub.squrell.cloud/squrell/monday-workspace"
+  },
+  "version": {
+    "major": 1,
+    "minor": 0,
+    "patch": 1
+  },
+  "description": "Work with monday.com boards, items, columns, updates and workspaces through the member's monday.com connection.",
+  "requiresConnector": "urn:vam:connector:hub.squrell.cloud/squrell/monday",
+  "tools": [
+    {
+      "name": "workspaces_list",
+      "description": "Lists the member's monday.com workspaces. Shows workspace name, id, and kind.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"limit\":{\"type\":\"integer\"}}}",
+      "outputSchemaJson": "{\"type\":\"object\",\"properties\":{\"workspaces\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"kind\":{\"type\":\"string\"}}}}},\"required\":[\"workspaces\"]}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./workspaces_list.ts"
+      },
+      "ui": {
+        "show": "workspace_list"
+      }
+    },
+    {
+      "name": "boards_list",
+      "description": "Lists boards in the member's monday.com account or within a specific workspace.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"workspaceId\":{\"type\":\"string\"},\"limit\":{\"type\":\"integer\"}}}",
+      "outputSchemaJson": "{\"type\":\"object\",\"properties\":{\"boards\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"state\":{\"type\":\"string\"}}}}},\"required\":[\"boards\"]}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./boards_list.ts"
+      },
+      "ui": {
+        "show": "board_list"
+      }
+    },
+    {
+      "name": "board_items_get",
+      "description": "Reads items and current status from a specified monday.com board.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"boardId\":{\"type\":\"string\"},\"limit\":{\"type\":\"integer\"}},\"required\":[\"boardId\"]}",
+      "outputSchemaJson": "{\"type\":\"object\",\"properties\":{\"items\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"}}}}},\"required\":[\"items\"]}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./board_items_get.ts"
+      },
+      "ui": {
+        "show": "item_list"
+      }
+    },
+    {
+      "name": "updates_get",
+      "description": "Reads discussion comments and updates on a monday.com item.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"itemId\":{\"type\":\"string\"}},\"required\":[\"itemId\"]}",
+      "outputSchemaJson": "{\"type\":\"object\",\"properties\":{\"updates\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"creator\":{\"type\":\"string\"},\"body\":{\"type\":\"string\"}}}}},\"required\":[\"updates\"]}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./updates_get.ts"
+      },
+      "ui": {
+        "show": "update_list"
+      }
+    },
+    {
+      "name": "board_insights",
+      "description": "Aggregates key metrics and distribution counts on a monday.com board.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"boardId\":{\"type\":\"string\"}},\"required\":[\"boardId\"]}",
+      "outputSchemaJson": "{\"type\":\"object\",\"properties\":{\"insights\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"label\":{\"type\":\"string\"},\"value\":{\"type\":\"string\"}}}}},\"required\":[\"insights\"]}",
+      "sideEffect": "SIDE_EFFECT_CLASS_READ_ONLY",
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./board_insights.ts"
+      },
+      "ui": {
+        "show": "insights_view"
+      }
+    },
+    {
+      "name": "item_create",
+      "description": "Creates a new item on a monday.com board. Always asks the member first with an approval card.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"boardId\":{\"type\":\"string\"},\"itemName\":{\"type\":\"string\"},\"groupId\":{\"type\":\"string\"}},\"required\":[\"boardId\",\"itemName\"]}",
+      "outputSchemaJson": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"created\":{\"type\":\"boolean\"}},\"required\":[\"id\"]}",
+      "sideEffect": "SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL",
+      "approvalRequired": true,
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./item_create.ts"
+      },
+      "ui": {
+        "ask": "item_approval"
+      }
+    },
+    {
+      "name": "item_change_column_values",
+      "description": "Modifies column values on an existing monday.com item. Always asks the member first with an approval card.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"boardId\":{\"type\":\"string\"},\"itemId\":{\"type\":\"string\"},\"columnValues\":{\"type\":\"string\"}},\"required\":[\"boardId\",\"itemId\",\"columnValues\"]}",
+      "outputSchemaJson": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"updated\":{\"type\":\"boolean\"}},\"required\":[\"id\"]}",
+      "sideEffect": "SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL",
+      "approvalRequired": true,
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./item_change_column_values.ts"
+      },
+      "ui": {
+        "ask": "column_approval"
+      }
+    },
+    {
+      "name": "update_create",
+      "description": "Posts a comment or update to an item discussion thread. Always asks the member first with an approval card.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"itemId\":{\"type\":\"string\"},\"body\":{\"type\":\"string\"}},\"required\":[\"itemId\",\"body\"]}",
+      "outputSchemaJson": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"posted\":{\"type\":\"boolean\"}},\"required\":[\"id\"]}",
+      "sideEffect": "SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL",
+      "approvalRequired": true,
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./update_create.ts"
+      },
+      "ui": {
+        "ask": "update_approval"
+      }
+    },
+    {
+      "name": "board_create",
+      "description": "Creates a new board within a workspace. Always asks the member first with an approval card.",
+      "inputSchemaJson": "{\"type\":\"object\",\"properties\":{\"workspaceId\":{\"type\":\"string\"},\"boardName\":{\"type\":\"string\"},\"boardKind\":{\"type\":\"string\"}},\"required\":[\"boardName\"]}",
+      "outputSchemaJson": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"created\":{\"type\":\"boolean\"}},\"required\":[\"id\"]}",
+      "sideEffect": "SIDE_EFFECT_CLASS_MUTABLE_EXTERNAL",
+      "approvalRequired": true,
+      "localExec": {
+        "command": "bun",
+        "entrypoint": "./board_create.ts"
+      },
+      "ui": {
+        "ask": "board_approval"
+      }
+    }
+  ]
+}
