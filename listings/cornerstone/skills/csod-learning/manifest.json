@@ -5,7 +5,7 @@
   "version": {
     "major": 1,
     "minor": 0,
-    "patch": 2
+    "patch": 3
   },
   "description": "Search catalog and transcripts, manage assignments and learning objects in Cornerstone Learning; member must be signed into VAM; writes ask first.",
   "requiresConnector": "urn:vam:connector:hub.squrell.cloud/squrell/cornerstone",
