@@ -201,6 +201,37 @@ describe("writes", () => {
   });
 });
 
+describe("sender", () => {
+  const X500 =
+    "/O=EXCHANGELABS/OU=EXCHANGE ADMINISTRATIVE GROUP (FYDIBOHF23SPDLT)/CN=RECIPIENTS/CN=015A2A7B3C4D4E5F8091A2B3C4D5E6F7-09";
+
+  test("an internal Exchange sender shows the name, not its X.500 address", async () => {
+    const { shape } = await mod("mail_search.ts");
+    const out = shape({
+      value: [
+        {
+          id: "m1",
+          subject: "Standup",
+          receivedDateTime: "2026-11-23T08:00:00Z",
+          bodyPreview: "",
+          isRead: false,
+          from: { emailAddress: { name: "Naga Sathya Abhilash Bollu", address: X500 } },
+        },
+      ],
+    });
+    expect(out.messages[0].from).toBe("Naga Sathya Abhilash Bollu");
+  });
+
+  test("an SMTP sender keeps its address; a missing name or address falls back", async () => {
+    const { sender } = await mod("lib/graph.ts");
+    expect(sender({ emailAddress: { name: "Ana", address: "ana@example.com" } })).toBe("Ana <ana@example.com>");
+    expect(sender({ emailAddress: { address: "bo@example.com" } })).toBe("bo@example.com");
+    expect(sender({ emailAddress: { name: "", address: X500 } })).toBe(X500);
+    expect(sender({ emailAddress: { name: "Cy" } })).toBe("Cy");
+    expect(sender({})).toBe("");
+  });
+});
+
 describe("failures", () => {
   test("a Graph error becomes a readable ToolError without a token", async () => {
     answer(401, { error: { code: "InvalidAuthenticationToken", message: "Access token has expired." } });

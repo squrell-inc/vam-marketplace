@@ -5,7 +5,7 @@
   "version": {
     "major": 1,
     "minor": 0,
-    "patch": 2
+    "patch": 3
   },
   "description": "Read the member's Microsoft 365 mail and calendar; draft, send and book only with their approval.",
   "requiresConnector": "urn:vam:connector:hub.squrell.cloud/squrell/microsoft-365",
