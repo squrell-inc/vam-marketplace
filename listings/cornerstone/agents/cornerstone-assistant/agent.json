@@ -13,19 +13,19 @@
     "skillRefs": [
       {
         "resourceId": { "urn": "urn:vam:skill:hub.squrell.cloud/squrell/csod-learning" },
-        "version": { "major": 1, "minor": 0, "patch": 1 }
+        "version": { "major": 1, "minor": 0, "patch": 2 }
       },
       {
         "resourceId": { "urn": "urn:vam:skill:hub.squrell.cloud/squrell/csod-core-hr" },
-        "version": { "major": 1, "minor": 0, "patch": 1 }
+        "version": { "major": 1, "minor": 0, "patch": 2 }
       },
       {
         "resourceId": { "urn": "urn:vam:skill:hub.squrell.cloud/squrell/csod-performance" },
-        "version": { "major": 1, "minor": 0, "patch": 1 }
+        "version": { "major": 1, "minor": 0, "patch": 2 }
       },
       {
         "resourceId": { "urn": "urn:vam:skill:hub.squrell.cloud/squrell/csod-recruiting" },
-        "version": { "major": 1, "minor": 0, "patch": 1 }
+        "version": { "major": 1, "minor": 0, "patch": 2 }
       }
     ],
     "permissions": {

@@ -1,7 +1,7 @@
 ---
 id: "urn:vam:skill:hub.squrell.cloud/squrell/csod-performance"
 name: "csod-performance"
-version: "1.0.1"
+version: "1.0.2"
 description: "Read performance reviews and manage goals in Cornerstone; member must be signed into VAM; writes ask first"
 ---
 

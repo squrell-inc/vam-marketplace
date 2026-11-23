@@ -1,7 +1,7 @@
 ---
 id: "urn:vam:skill:hub.squrell.cloud/squrell/csod-learning"
 name: "csod-learning"
-version: "1.0.1"
+version: "1.0.2"
 description: "Search catalog and transcripts, manage assignments and learning objects in Cornerstone Learning; member must be signed into VAM; writes ask first"
 ---
 

@@ -1,7 +1,7 @@
 ---
 id: "urn:vam:skill:hub.squrell.cloud/squrell/csod-recruiting"
 name: "csod-recruiting"
-version: "1.0.1"
+version: "1.0.2"
 description: "Read requisitions and applicants and update applicant status in Cornerstone Recruiting; member must be signed into VAM; writes ask first"
 ---
 

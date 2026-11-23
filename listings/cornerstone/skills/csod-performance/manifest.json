@@ -5,7 +5,7 @@
   "version": {
     "major": 1,
     "minor": 0,
-    "patch": 1
+    "patch": 2
   },
   "description": "Read performance reviews and manage goals in Cornerstone; member must be signed into VAM; writes ask first.",
   "requiresConnector": "urn:vam:connector:hub.squrell.cloud/squrell/cornerstone",
