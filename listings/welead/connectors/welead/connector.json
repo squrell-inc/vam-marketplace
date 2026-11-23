@@ -18,15 +18,6 @@
     "orgConsent": "none"
   },
   "connection": { "holder": "user", "multiAccount": false, "label": "WeLead account" },
-  "bindings": [
-    {
-      "name": "mcp",
-      "placeholder": "vamsec_welead_mcp",
-      "value": "access_token",
-      "inject": "bearer",
-      "hosts": ["welead.vithiit.com"]
-    }
-  ],
   "mcp": {
     "url": "https://welead.vithiit.com/mcp",
     "tools": [

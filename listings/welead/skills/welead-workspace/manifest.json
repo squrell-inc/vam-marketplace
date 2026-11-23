@@ -14,14 +14,6 @@
         "command": "bun",
         "entrypoint": "./list_leads.ts"
       },
-      "egress": [
-        {
-          "binding": "mcp",
-          "host": "welead.vithiit.com",
-          "methods": ["POST"],
-          "pathPrefixes": ["/mcp"]
-        }
-      ],
       "ui": {
         "show": "leads_list"
       }
@@ -37,14 +29,6 @@
         "command": "bun",
         "entrypoint": "./create_lead.ts"
       },
-      "egress": [
-        {
-          "binding": "mcp",
-          "host": "welead.vithiit.com",
-          "methods": ["POST"],
-          "pathPrefixes": ["/mcp"]
-        }
-      ],
       "ui": {
         "ask": "lead_create_approval"
       }
@@ -60,14 +44,6 @@
         "command": "bun",
         "entrypoint": "./update_lead_status.ts"
       },
-      "egress": [
-        {
-          "binding": "mcp",
-          "host": "welead.vithiit.com",
-          "methods": ["POST"],
-          "pathPrefixes": ["/mcp"]
-        }
-      ],
       "ui": {
         "ask": "lead_update_approval"
       }
@@ -82,14 +58,6 @@
         "command": "bun",
         "entrypoint": "./list_clients.ts"
       },
-      "egress": [
-        {
-          "binding": "mcp",
-          "host": "welead.vithiit.com",
-          "methods": ["POST"],
-          "pathPrefixes": ["/mcp"]
-        }
-      ],
       "ui": {
         "show": "clients_list"
       }
@@ -105,17 +73,10 @@
         "command": "bun",
         "entrypoint": "./create_client.ts"
       },
-      "egress": [
-        {
-          "binding": "mcp",
-          "host": "welead.vithiit.com",
-          "methods": ["POST"],
-          "pathPrefixes": ["/mcp"]
-        }
-      ],
       "ui": {
         "ask": "client_create_approval"
       }
     }
   ]
 }
+
