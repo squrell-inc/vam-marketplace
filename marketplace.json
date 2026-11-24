@@ -168,8 +168,8 @@
     },
     {
       "id": "monday",
-      "displayName": "monday.com",
-      "description": "Read and update workspaces, boards, items, columns and updates through the member's own monday.com connection. Changes are made only after the member approves.",
+      "displayName": "Monday MCP",
+      "description": "Read and update workspaces, boards, items, columns and updates through the member's own Monday MCP connection. Changes are made only after the member approves.",
       "connector": "urn:vam:connector:hub.squrell.cloud/squrell/monday",
       "artifacts": [
         {

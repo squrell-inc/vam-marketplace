@@ -1,21 +1,25 @@
 {
   "urn": "urn:vam:connector:hub.squrell.cloud/squrell/monday",
-  "version": "1.0.1",
-  "displayName": "monday.com",
+  "version": "1.0.2",
+  "displayName": "Monday MCP",
   "publisher": "monday.com (hosted MCP server)",
-  "description": "Read and update workspaces, boards, items, columns and updates through the member's own monday.com connection. Reads run freely; writes wait for member approval.",
+  "description": "Read and update workspaces, boards, items, columns and updates through the member's own Monday MCP connection. Reads run freely; writes wait for member approval.",
   "icon": "monday",
   "provider": {
     "kind": "oauth2",
-    "profile": "discover",
+    "profile": "oauth",
     "clientSecret": "none",
+    "endpoints": {
+      "authorize": "https://auth.monday.com/oauth2/authorize",
+      "token": "https://auth.monday.com/oauth2/token"
+    },
     "scopes": [],
     "orgConsent": "none"
   },
   "connection": {
     "holder": "user",
     "multiAccount": false,
-    "label": "monday.com account"
+    "label": "Monday account"
   },
   "mcp": {
     "url": "https://mcp.monday.com/mcp",
