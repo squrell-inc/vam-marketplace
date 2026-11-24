@@ -99,7 +99,7 @@
           "path": "listings/welead/agents/welead-assistant"
         }
       ],
-      "ref": "welead-v1.1.0",
+      "ref": "welead-v1.1.1",
       "requiresNode": ">=0.1.0"
     },
     {
