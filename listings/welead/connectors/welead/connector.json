@@ -8,6 +8,7 @@
   "provider": {
     "kind": "oauth2",
     "profile": "discover",
+    "clientId": "squrell-ai",
     "clientSecret": "none",
     "scopes": [
       "mcp",
