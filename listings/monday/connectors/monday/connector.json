@@ -7,12 +7,8 @@
   "icon": "monday",
   "provider": {
     "kind": "oauth2",
-    "profile": "oauth",
+    "profile": "discover",
     "clientSecret": "none",
-    "endpoints": {
-      "authorize": "https://auth.monday.com/oauth2/authorize",
-      "token": "https://auth.monday.com/oauth2/token"
-    },
     "scopes": [],
     "orgConsent": "none"
   },
