@@ -1,7 +1,7 @@
 ---
 id: "urn:vam:skill:hub.squrell.cloud/squrell/monday-workspace"
 name: "monday-workspace"
-version: "1.0.1"
+version: "1.0.2"
 description: "Work with monday.com boards, items, columns, updates and workspaces through the member's monday.com connection"
 ---
 
