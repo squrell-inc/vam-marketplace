@@ -1,7 +1,7 @@
 ---
 id: "urn:vam:skill:hub.squrell.cloud/squrell/welead-workspace"
 name: "welead-workspace"
-version: "1.1.0"
+version: "1.1.1"
 description: "How to read and update the member's WeLead pipeline leads, activities, corporate clients, comments and approvals with the WeLead connector's tools"
 ---
 
