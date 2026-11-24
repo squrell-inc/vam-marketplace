@@ -189,7 +189,7 @@
           "path": "listings/monday/agents/monday-assistant"
         }
       ],
-      "ref": "monday-v1.0.1",
+      "ref": "monday-v1.0.2",
       "requiresNode": ">=0.1.0"
     }
   ]
