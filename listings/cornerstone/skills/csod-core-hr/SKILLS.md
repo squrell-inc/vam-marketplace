@@ -1,7 +1,7 @@
 ---
 id: "urn:vam:skill:hub.squrell.cloud/squrell/csod-core-hr"
 name: "csod-core-hr"
-version: "1.0.1"
+version: "1.0.3"
 description: "Read and update Cornerstone employees, OUs, approvals and jobs; member must be signed into VAM; writes ask first"
 ---
 
@@ -9,7 +9,7 @@ description: "Read and update Cornerstone employees, OUs, approvals and jobs; me
 
 Work with Cornerstone Core/HR through the **org** Cornerstone connection.
 
-**Auth:** Member must be signed into VAM (Log In or SSO). No Cornerstone secrets in tools; host uses org token via `vamsec_csod`.
+**Auth:** Member must be signed into VAM (Log In or SSO). No Cornerstone secrets in tools; host uses org token via `vamsec_cornerstone_csod`. Portal host comes from Enable (`.vam/connector.json` → `hosts.csod`), never hardcoded.
 
 ## When to use each tool
 

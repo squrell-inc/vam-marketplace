@@ -30,10 +30,9 @@ env:
   # that only computes suggestions, so the tool is READ_ONLY and declares a POST.
   ACCEPTED_FINDING: "tool 'calendar_find_slots': a READ_ONLY tool declares an egress method other than GET or HEAD"
   # Listings left out of the gate (space-separated ids). Each run prints them.
-  # cornerstone: under the Phase 7 node its skills' egress names the binding `csod`, which its
-  # MCP discover connector does not provide (VAM CN-7.3, "a tool's egress must name a binding of
-  # its connector"), so the node refuses to import it. Excluded until its listing is fixed; this
-  # applies to cornerstone only, and the entry is removed as soon as cornerstone passes.
+  # cornerstone: REST connector + `csod` binding + `{subdomain}.csod.com` are fixed; write tools
+  # still declare POST/PATCH via `pathPrefixes` (catalog warnings under --strict). Excluded until
+  # those egress shapes use exact `paths`; remove this entry when that lands.
   EXCLUDED_LISTINGS: "cornerstone"
 
 jobs:

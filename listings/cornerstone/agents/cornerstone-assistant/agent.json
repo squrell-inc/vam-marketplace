@@ -8,87 +8,286 @@
     "role": "Cornerstone workspace assistant",
     "systemInstructions": "You are the member's assistant for Cornerstone OnDemand. The member is already signed into VAM; do not ask for Cornerstone client id, secret, or portal password. Use the org Cornerstone connection only. Load the relevant csod-* skill before using its tools (csod-learning, csod-core-hr, csod-performance, csod-recruiting). Read freely; never create, update, delete, assign or submit without the approval card, and do not repeat a write the member denied. When the member asks to assign training at scale, start the assign-training playbook. Be brief, name courses and people by exact titles.",
     "allowedPlaybookRefs": [
-      { "resourceId": { "urn": "urn:vam:playbook:hub.squrell.cloud/squrell/assign-training" } }
+      {
+        "resourceId": {
+          "urn": "urn:vam:playbook:hub.squrell.cloud/squrell/assign-training"
+        }
+      }
     ],
     "skillRefs": [
       {
-        "resourceId": { "urn": "urn:vam:skill:hub.squrell.cloud/squrell/csod-learning" },
-        "version": { "major": 1, "minor": 0, "patch": 1 }
+        "resourceId": {
+          "urn": "urn:vam:skill:hub.squrell.cloud/squrell/csod-learning"
+        },
+        "version": {
+          "major": 1,
+          "minor": 0,
+          "patch": 3
+        }
       },
       {
-        "resourceId": { "urn": "urn:vam:skill:hub.squrell.cloud/squrell/csod-core-hr" },
-        "version": { "major": 1, "minor": 0, "patch": 1 }
+        "resourceId": {
+          "urn": "urn:vam:skill:hub.squrell.cloud/squrell/csod-core-hr"
+        },
+        "version": {
+          "major": 1,
+          "minor": 0,
+          "patch": 3
+        }
       },
       {
-        "resourceId": { "urn": "urn:vam:skill:hub.squrell.cloud/squrell/csod-performance" },
-        "version": { "major": 1, "minor": 0, "patch": 1 }
+        "resourceId": {
+          "urn": "urn:vam:skill:hub.squrell.cloud/squrell/csod-performance"
+        },
+        "version": {
+          "major": 1,
+          "minor": 0,
+          "patch": 3
+        }
       },
       {
-        "resourceId": { "urn": "urn:vam:skill:hub.squrell.cloud/squrell/csod-recruiting" },
-        "version": { "major": 1, "minor": 0, "patch": 1 }
+        "resourceId": {
+          "urn": "urn:vam:skill:hub.squrell.cloud/squrell/csod-recruiting"
+        },
+        "version": {
+          "major": 1,
+          "minor": 0,
+          "patch": 3
+        }
       }
     ],
     "permissions": {
       "tools": {
         "default": "deny",
         "rules": [
-          { "target": "builtin:load_skill", "decision": "allow" },
-          { "target": "builtin:step_complete", "decision": "allow" },
-          { "target": "builtin:start_playbook", "decision": "allow" },
-          { "target": "skill:csod-learning/catalog_search", "decision": "allow" },
-          { "target": "skill:csod-learning/lo_get_details", "decision": "allow" },
-          { "target": "skill:csod-learning/lo_create", "decision": "ask" },
-          { "target": "skill:csod-learning/lo_update", "decision": "ask" },
-          { "target": "skill:csod-learning/transcript_search", "decision": "allow" },
-          { "target": "skill:csod-learning/transcript_overview", "decision": "allow" },
-          { "target": "skill:csod-learning/transcript_details", "decision": "allow" },
-          { "target": "skill:csod-learning/transcript_assign", "decision": "ask" },
-          { "target": "skill:csod-learning/transcript_request", "decision": "ask" },
-          { "target": "skill:csod-learning/user_inbox", "decision": "allow" },
-          { "target": "skill:csod-learning/user_assigned", "decision": "allow" },
-          { "target": "skill:csod-learning/user_sessions", "decision": "allow" },
-          { "target": "skill:csod-learning/user_transcript", "decision": "allow" },
-          { "target": "skill:csod-learning/suggested_training", "decision": "allow" },
-          { "target": "skill:csod-learning/pending_approvals", "decision": "allow" },
-          { "target": "skill:csod-learning/user_tasks", "decision": "allow" },
-          { "target": "skill:csod-learning/assignment_search", "decision": "allow" },
-          { "target": "skill:csod-learning/assignment_get", "decision": "allow" },
-          { "target": "skill:csod-learning/assignment_create", "decision": "ask" },
-          { "target": "skill:csod-learning/roster_get", "decision": "allow" },
-          { "target": "skill:csod-learning/roster_update", "decision": "ask" },
-          { "target": "skill:csod-learning/cert_get", "decision": "allow" },
-          { "target": "skill:csod-learning/cert_transcript", "decision": "allow" },
-          { "target": "skill:csod-learning/cert_remove", "decision": "ask" },
-          { "target": "skill:csod-learning/express_class_create", "decision": "ask" },
-          { "target": "skill:csod-core-hr/employee_search", "decision": "allow" },
-          { "target": "skill:csod-core-hr/employee_get", "decision": "allow" },
-          { "target": "skill:csod-core-hr/employee_create", "decision": "ask" },
-          { "target": "skill:csod-core-hr/employee_update", "decision": "ask" },
-          { "target": "skill:csod-core-hr/ou_types", "decision": "allow" },
-          { "target": "skill:csod-core-hr/ou_list", "decision": "allow" },
-          { "target": "skill:csod-core-hr/ou_get", "decision": "allow" },
-          { "target": "skill:csod-core-hr/ou_create", "decision": "ask" },
-          { "target": "skill:csod-core-hr/ou_update", "decision": "ask" },
-          { "target": "skill:csod-core-hr/global_search", "decision": "allow" },
-          { "target": "skill:csod-core-hr/approvals_list", "decision": "allow" },
-          { "target": "skill:csod-core-hr/approvals_decide", "decision": "ask" },
-          { "target": "skill:csod-core-hr/job_list", "decision": "allow" },
-          { "target": "skill:csod-core-hr/job_get", "decision": "allow" },
-          { "target": "skill:csod-core-hr/job_create", "decision": "ask" },
-          { "target": "skill:csod-core-hr/job_update", "decision": "ask" },
-          { "target": "skill:csod-performance/review_get", "decision": "allow" },
-          { "target": "skill:csod-performance/goal_get", "decision": "allow" },
-          { "target": "skill:csod-performance/goal_create", "decision": "ask" },
-          { "target": "skill:csod-performance/goal_update", "decision": "ask" },
-          { "target": "skill:csod-performance/goal_update_progress", "decision": "ask" },
-          { "target": "skill:csod-recruiting/requisition_get", "decision": "allow" },
-          { "target": "skill:csod-recruiting/requisition_ad", "decision": "allow" },
-          { "target": "skill:csod-recruiting/requisition_custom_fields", "decision": "allow" },
-          { "target": "skill:csod-recruiting/application_workflow_get", "decision": "allow" },
-          { "target": "skill:csod-recruiting/applicant_search", "decision": "allow" },
-          { "target": "skill:csod-recruiting/applicant_custom_fields", "decision": "allow" },
-          { "target": "skill:csod-recruiting/applicant_update_status", "decision": "ask" },
-          { "target": "skill:csod-recruiting/job_application_submit", "decision": "ask" }
+          {
+            "target": "builtin:load_skill",
+            "decision": "allow"
+          },
+          {
+            "target": "builtin:step_complete",
+            "decision": "allow"
+          },
+          {
+            "target": "builtin:start_playbook",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-learning/catalog_search",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-learning/lo_get_details",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-learning/lo_create",
+            "decision": "ask"
+          },
+          {
+            "target": "skill:csod-learning/lo_update",
+            "decision": "ask"
+          },
+          {
+            "target": "skill:csod-learning/transcript_search",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-learning/transcript_overview",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-learning/transcript_details",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-learning/transcript_assign",
+            "decision": "ask"
+          },
+          {
+            "target": "skill:csod-learning/transcript_request",
+            "decision": "ask"
+          },
+          {
+            "target": "skill:csod-learning/user_inbox",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-learning/user_assigned",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-learning/user_sessions",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-learning/user_transcript",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-learning/suggested_training",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-learning/pending_approvals",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-learning/user_tasks",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-learning/assignment_search",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-learning/assignment_get",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-learning/assignment_create",
+            "decision": "ask"
+          },
+          {
+            "target": "skill:csod-learning/roster_get",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-learning/roster_update",
+            "decision": "ask"
+          },
+          {
+            "target": "skill:csod-learning/cert_get",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-learning/cert_transcript",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-learning/cert_remove",
+            "decision": "ask"
+          },
+          {
+            "target": "skill:csod-learning/express_class_create",
+            "decision": "ask"
+          },
+          {
+            "target": "skill:csod-core-hr/employee_search",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-core-hr/employee_get",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-core-hr/employee_create",
+            "decision": "ask"
+          },
+          {
+            "target": "skill:csod-core-hr/employee_update",
+            "decision": "ask"
+          },
+          {
+            "target": "skill:csod-core-hr/ou_types",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-core-hr/ou_list",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-core-hr/ou_get",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-core-hr/ou_create",
+            "decision": "ask"
+          },
+          {
+            "target": "skill:csod-core-hr/ou_update",
+            "decision": "ask"
+          },
+          {
+            "target": "skill:csod-core-hr/global_search",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-core-hr/approvals_list",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-core-hr/approvals_decide",
+            "decision": "ask"
+          },
+          {
+            "target": "skill:csod-core-hr/job_list",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-core-hr/job_get",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-core-hr/job_create",
+            "decision": "ask"
+          },
+          {
+            "target": "skill:csod-core-hr/job_update",
+            "decision": "ask"
+          },
+          {
+            "target": "skill:csod-performance/review_get",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-performance/goal_get",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-performance/goal_create",
+            "decision": "ask"
+          },
+          {
+            "target": "skill:csod-performance/goal_update",
+            "decision": "ask"
+          },
+          {
+            "target": "skill:csod-performance/goal_update_progress",
+            "decision": "ask"
+          },
+          {
+            "target": "skill:csod-recruiting/requisition_get",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-recruiting/requisition_ad",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-recruiting/requisition_custom_fields",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-recruiting/application_workflow_get",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-recruiting/applicant_search",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-recruiting/applicant_custom_fields",
+            "decision": "allow"
+          },
+          {
+            "target": "skill:csod-recruiting/applicant_update_status",
+            "decision": "ask"
+          },
+          {
+            "target": "skill:csod-recruiting/job_application_submit",
+            "decision": "ask"
+          }
         ]
       }
     }

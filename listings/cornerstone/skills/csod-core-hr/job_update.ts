@@ -1,9 +1,9 @@
-import { csod, pathSeg, query, runTool, ToolError } from "./lib/csod.ts";
+import { csod, pathSeg, runTool, ToolError } from "./lib/csod.ts";
 
 export async function jobUpdate(args: Record<string, any>) {
   const jobId = pathSeg(args, "jobId");
   if (!args.body || typeof args.body !== "object") throw new ToolError("'body' is required.");
-  const { json } = await csod("PATCH", `/services/api/x/chr-jobmgmt-app/v1/jobs${query({ jobId })}`, args.body);
+  const { json } = await csod("PATCH", `/services/api/x/chr-jobmgmt-app/v1/jobs/${jobId}`, args.body);
   return { updated: true, result: json?.data ?? json };
 }
 

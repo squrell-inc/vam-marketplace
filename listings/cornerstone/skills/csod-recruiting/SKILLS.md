@@ -1,7 +1,7 @@
 ---
 id: "urn:vam:skill:hub.squrell.cloud/squrell/csod-recruiting"
 name: "csod-recruiting"
-version: "1.0.1"
+version: "1.0.3"
 description: "Read requisitions and applicants and update applicant status in Cornerstone Recruiting; member must be signed into VAM; writes ask first"
 ---
 
@@ -9,7 +9,7 @@ description: "Read requisitions and applicants and update applicant status in Co
 
 Work with Cornerstone Recruiting through the **org** Cornerstone connection.
 
-**Auth:** Member must be signed into VAM (Log In or SSO). Tools use the org Cornerstone token via `vamsec_csod`; never ask for Cornerstone credentials.
+**Auth:** Member must be signed into VAM (Log In or SSO). Tools use the org Cornerstone token via `vamsec_cornerstone_csod`; never ask for Cornerstone credentials. Portal host comes from Enable (`.vam/connector.json` → `hosts.csod`), never hardcoded.
 
 ## When to use each tool
 

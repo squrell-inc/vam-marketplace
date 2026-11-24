@@ -105,7 +105,7 @@
     {
       "id": "cornerstone",
       "displayName": "Cornerstone OnDemand",
-      "description": "Work with Cornerstone Learning, Core/HR, Performance and Recruiting through the member's Cornerstone connection. Reads run freely. Writes wait for the member's approval.",
+      "description": "Work with Cornerstone Learning, Core/HR, Performance and Recruiting through Cornerstone REST APIs. At Enable the admin enters the company portal label (for example acme for acme.csod.com) and the Edge API client id. Members must be signed into VAM. Writes wait for the member's approval.",
       "connector": "urn:vam:connector:hub.squrell.cloud/squrell/cornerstone",
       "artifacts": [
         {
@@ -137,7 +137,7 @@
           "path": "listings/cornerstone/agents/cornerstone-assistant"
         }
       ],
-      "ref": "cornerstone-v0.1.1",
+      "ref": "cornerstone-v1.0.3",
       "requiresNode": ">=0.1.0"
     },
     {
@@ -164,7 +164,7 @@
         }
       ],
       "ref": "box-v1.0.1",
-      "requiresNode": ">=0.2.0"
+      "requiresNode": ">=0.1.0"
     },
     {
       "id": "monday",

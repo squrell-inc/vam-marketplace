@@ -5,7 +5,7 @@
   "version": {
     "major": 1,
     "minor": 0,
-    "patch": 1
+    "patch": 3
   },
   "description": "Read and update Cornerstone employees, OUs, approvals and jobs; member must be signed into VAM; writes ask first.",
   "requiresConnector": "urn:vam:connector:hub.squrell.cloud/squrell/cornerstone",
@@ -23,7 +23,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -46,7 +46,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -69,11 +69,11 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "POST"
           ],
-          "paths": [
+          "pathPrefixes": [
             "/services/api/x/users/v2/employees"
           ]
         }
@@ -93,11 +93,11 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "PATCH"
           ],
-          "paths": [
+          "pathPrefixes": [
             "/services/api/x/users/v2/employees"
           ]
         }
@@ -117,7 +117,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -140,7 +140,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -163,7 +163,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -186,11 +186,11 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "POST"
           ],
-          "paths": [
+          "pathPrefixes": [
             "/services/api/x/organizations/v1/ous"
           ]
         }
@@ -210,11 +210,11 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "PUT"
           ],
-          "paths": [
+          "pathPrefixes": [
             "/services/api/x/organizations/v1/ous"
           ]
         }
@@ -234,7 +234,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -257,7 +257,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -280,12 +280,12 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "POST"
           ],
-          "paths": [
-            "/services/api/Employee/approvals"
+          "pathPrefixes": [
+            "/services/api/Employee"
           ]
         }
       ],
@@ -304,7 +304,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -327,7 +327,7 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "GET"
           ],
@@ -350,11 +350,11 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "POST"
           ],
-          "paths": [
+          "pathPrefixes": [
             "/services/api/x/chr-jobmgmt-app/v1/jobs"
           ]
         }
@@ -374,11 +374,11 @@
       "egress": [
         {
           "binding": "csod",
-          "host": "example.csod.com",
+          "host": "{subdomain}.csod.com",
           "methods": [
             "PATCH"
           ],
-          "paths": [
+          "pathPrefixes": [
             "/services/api/x/chr-jobmgmt-app/v1/jobs"
           ]
         }

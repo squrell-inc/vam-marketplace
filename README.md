@@ -11,7 +11,7 @@ and admits them read-only, marked as Squrell content.
 | `notion` | a connector for Notion's hosted MCP server (search and fetch run freely, creating pages asks first), the `notion-workspace` skill, the Publish meeting notes playbook, the Notion assistant agent. |
 | `wetrack` | a connector for WeTrack's hosted MCP server at `https://wetrack.vithiit.com/api/mcp` (reads run freely, ticket, comment and sprint writes ask first), the `wetrack-workspace` skill, the File a ticket playbook, the WeTrack assistant agent. |
 | `welead` | a connector for WeLead's hosted MCP server at `https://welead.vithiit.com/mcp` (reads run freely, lead, client, comment and approval writes ask first), the `welead-workspace` skill, the Create a lead playbook, the WeLead assistant agent. |
-| `cornerstone` | a connector for Cornerstone OnDemand (member sign-in, no client secret; reads run freely, writes ask first), the `csod-learning`, `csod-core-hr`, `csod-performance` and `csod-recruiting` skills, the Assign training playbook, the Cornerstone assistant agent. |
+| `cornerstone` | a REST connector for Cornerstone OnDemand (admin enters portal label and Edge client id at Enable; reads run freely, writes ask first), the `csod-learning`, `csod-core-hr`, `csod-performance` and `csod-recruiting` skills, the Assign training playbook, the Cornerstone assistant agent. See [`docs/cornerstone-connector-contract.md`](docs/cornerstone-connector-contract.md). |
 | `box` | a connector for Box's hosted MCP server at `https://mcp.box.com` with a client id and secret the org admin enters (needs VAM connectors Phase 5; read-only tools), the `box-documents` skill, the Answer from documents playbook, the Box assistant agent. See [`docs/listing-box.md`](docs/listing-box.md). |
 | `monday` | a connector for Monday MCP at `https://mcp.monday.com/mcp` (reads run freely, item, update, column, board and workspace writes ask first), the `monday-workspace` skill, the Create a task playbook, the Monday Agent. See [`docs/listing-monday.md`](docs/listing-monday.md). |
 
@@ -104,11 +104,6 @@ when a new node release changes the rules.
   lack `tests/connector-test.json`; that one warning is accepted at a tag, because a tag cannot change.
   The current tree still has to pass it;
 - runs the Bun tests for the skills (`bun test tests`).
-
-**Excluded from the gate: cornerstone.** `EXCLUDED_LISTINGS` in the workflow leaves it out, and every run
-prints that. Under the Phase 7 node its skills' egress names the binding `csod`, which its MCP discover
-connector does not provide, so the node refuses to import its releases (`cornerstone-v0.1.0` on). The exclusion is for
-cornerstone only and is removed when its listing is fixed and passes.
 
 The workflow needs no secrets, so it also runs on pull requests from forks.
 
